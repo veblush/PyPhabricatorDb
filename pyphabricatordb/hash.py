@@ -7,4 +7,4 @@ def digestForIndex(s):
     result = ""
     for i in xrange(12):
         result = result + map[ord(hash[i]) & 0x3F]
-    print result
+    return result
