@@ -1,0 +1,484 @@
+{
+  "phabricator_almanac": {
+    "AlmanacBinding": {},
+    "AlmanacBindingTransaction": {},
+    "AlmanacDevice": {},
+    "AlmanacDeviceTransaction": {},
+    "AlmanacInterface": {},
+    "AlmanacNetwork": {},
+    "AlmanacNetworkTransaction": {},
+    "AlmanacProperty": {},
+    "AlmanacService": {},
+    "AlmanacServiceTransaction": {},
+    "Edge": {},
+    "EdgeDatum": {}
+  },
+  "phabricator_audit": {
+    "AuditTransaction": {},
+    "AuditTransactionComment": {}
+  },
+  "phabricator_auth": {
+    "AuthFactorConfig": {},
+    "AuthProviderConfig": {},
+    "AuthProviderConfigTransaction": {},
+    "AuthSSHkey": {},
+    "AuthTemporaryToken": {}
+  },
+  "phabricator_cache": {
+    "CacheGeneral": {},
+    "CacheMarkupCache": {}
+  },
+  "phabricator_calendar": {
+    "CalendarEvent": {},
+    "CalendarHoliday": {}
+  },
+  "phabricator_chatlog": {
+    "ChatLogChannel": {},
+    "ChatLogEvent": {}
+  },
+  "phabricator_conduit": {
+    "ConduitCertificateToken": {},
+    "ConduitConnectionLog": {},
+    "ConduitMethodCallLog": {}
+  },
+  "phabricator_config": {
+    "ConfigEntry": {},
+    "ConfigTransaction": {}
+  },
+  "phabricator_conpherence": {
+    "ConpherenceParticipant": {},
+    "ConpherenceThread": {},
+    "ConpherenceTransaction": {},
+    "ConpherenceTransactionComment": {},
+    "Edge": {},
+    "EdgeDatum": {}
+  },
+  "phabricator_countdown": {
+    "CountDown": {}
+  },
+  "phabricator_daemon": {
+    "DaemonLog": {},
+    "DaemonLogEvent": {}
+  },
+  "phabricator_dashboard": {
+    "Dashboard": {},
+    "DashboardInstall": {},
+    "DashboardPanel": {},
+    "DashboardPanelTransaction": {},
+    "DashboardTransaction": {},
+    "Edge": {},
+    "EdgeDatum": {}
+  },
+  "phabricator_differential": {
+    "DifferentialChangeset": {},
+    "DifferentialChangesetParseCache": {},
+    "DifferentialCommit": {},
+    "DifferentialCustomFieldNumericIndex": {},
+    "DifferentialCustomFieldStorage": {},
+    "DifferentialCustomFieldStringIndex": {},
+    "DifferentialDiff": {},
+    "DifferentialDiffProperty": {},
+    "DifferentialDraft": {},
+    "DifferentialHunk": {},
+    "DifferentialHunkModern": {},
+    "DifferentialRevision": {},
+    "DifferentialTransaction": {},
+    "DifferentialTransactionComment": {},
+    "Edge": {},
+    "EdgeDatum": {}
+  },
+  "phabricator_diviner": {
+    "DivinerLiveAtom": {},
+    "DivinerLiveBook": {},
+    "DivinerLiveSymbol": {}
+  },
+  "phabricator_doorkeeper": {
+    "DoorkeeperExternalObject": {},
+    "Edge": {},
+    "EdgeDatum": {}
+  },
+  "phabricator_draft": {
+    "Draft": {}
+  },
+  "phabricator_drydock": {
+    "DrydockBlueprint": {},
+    "DrydockBlueprintTransaction": {},
+    "DrydockLease": {},
+    "DrydockLog": {},
+    "DrydockReSource": {}
+  },
+  "phabricator_fact": {
+    "FactAggregate": {},
+    "FactCursor": {},
+    "FactRaw": {}
+  },
+  "phabricator_feed": {
+    "FeedStoryDatum": {}
+  },
+  "phabricator_file": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "File": {},
+    "FileImageMacro": {},
+    "FileStorageBlob": {},
+    "FileTransaction": {},
+    "FileTransactionComment": {},
+    "FileTransformedFile": {},
+    "MacroTransaction": {},
+    "MacroTransactionComment": {}
+  },
+  "phabricator_flag": {
+    "Flag": {}
+  },
+  "phabricator_fund": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "FundBacker": {},
+    "FundBackerTransaction": {},
+    "FundInitiative": {},
+    "FundInitiativeTransaction": {}
+  },
+  "phabricator_harbormaster": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "HarbormasterBuild": {},
+    "HarbormasterBuildable": {},
+    "HarbormasterBuildableTransaction": {},
+    "HarbormasterBuildArtifact": {},
+    "HarbormasterBuildCommand": {},
+    "HarbormasterBuildLog": {},
+    "HarbormasterBuildLogchunk": {},
+    "HarbormasterBuildMessage": {},
+    "HarbormasterBuildPlan": {},
+    "HarbormasterBuildPlanTransaction": {},
+    "HarbormasterBuildStep": {},
+    "HarbormasterBuildStepTransaction": {},
+    "HarbormasterBuildTarget": {},
+    "HarbormasterBuildTransaction": {},
+    "HarbormasterObject": {},
+    "HarbormasterScratchTable": {},
+    "LiskCounter": {}
+  },
+  "phabricator_herald": {
+    "HeraldAction": {},
+    "HeraldCondition": {},
+    "HeraldRule": {},
+    "HeraldRuleApplied": {},
+    "HeraldRuleEdit": {},
+    "HeraldRuleTransaction": {},
+    "HeraldRuleTransactionComment": {},
+    "HeraldSavedHeader": {},
+    "HeraldTranscript": {}
+  },
+  "phabricator_legalpad": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "LegalpadDocument": {},
+    "LegalpadDocumentBody": {},
+    "LegalpadDocumentSignature": {},
+    "LegalpadTransaction": {},
+    "LegalpadTransactionComment": {}
+  },
+  "phabricator_maniphest": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "CustomFieldNumericIndex": {},
+    "CustomFieldStorage": {
+      "objectPHID": {
+        "ForeignKey": "maniphest_task.phid"
+      }
+    },
+    "CustomFieldStringIndex": {},
+    "NameIndex": {},
+    "Task": {
+      "__code__": [
+        "subscribers = relationship('TaskSubscriber')",
+        "transactions = relationship('Transaction')",
+        "customFieldStorages = relationship('CustomFieldStorage')"
+      ]
+    },
+    "TaskSubscriber": {
+      "taskPHID": {
+        "ForeignKey": "maniphest_task.phid"
+      }
+    },
+    "Transaction": {
+      "objectPHID": {
+        "ForeignKey": "maniphest_task.phid"
+      },
+      "__code__": [
+        "comment = relationship('TransactionComment', uselist=False, backref='maniphest_transaction')"
+      ]
+    },
+    "TransactionComment": {
+      "transactionPHID": {
+        "ForeignKey": "maniphest_transaction.phid"
+      }
+    }
+  },
+  "phabricator_meta_data": {
+    "PatchStatus": {}
+  },
+  "phabricator_metamta": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "MetaMtaMail": {},
+    "MetaMtaMailingList": {},
+    "MetaMtaReceivedMail": {},
+    "SMS": {}
+  },
+  "phabricator_nuance": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "NuanceItem": {},
+    "NuanceItemTransaction": {},
+    "NuanceItemTransactionComment": {},
+    "NuanceQueue": {},
+    "NuanceQueueItem": {},
+    "NuanceQueueTransaction": {},
+    "NuanceQueueTransactionComment": {},
+    "NuanceRequestor": {},
+    "NuanceRequestorSource": {},
+    "NuanceRequestorTransaction": {},
+    "NuanceRequestorTransactionComment": {},
+    "NuanceSource": {},
+    "NuanceSourceTransaction": {},
+    "NuanceSourceTransactionComment": {}
+  },
+  "phabricator_oauth_server": {
+    "OAuthServerOAuthClientAuthorization": {},
+    "OAuthServerOAuthServerAccessToken": {},
+    "OAuthServerOAuthServerAuthorizationcode": {},
+    "OAuthServerOAuthServerClient": {}
+  },
+  "phabricator_owners": {
+    "OwnersOwner": {},
+    "OwnersPackage": {},
+    "OwnersPath": {}
+  },
+  "phabricator_passphrase": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PassphraseCredential": {},
+    "PassphraseCredentialTransaction": {},
+    "PassphraseSecret": {}
+  },
+  "phabricator_pastebin": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PastebinPaste": {},
+    "PastebinPasteTransaction": {},
+    "PastebinPasteTransactionComment": {}
+  },
+  "phabricator_phame": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PhameBLog": {},
+    "PhamePost": {}
+  },
+  "phabricator_phlux": {
+    "PhluxTransaction": {},
+    "PhluxVariable": {}
+  },
+  "phabricator_pholio": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PholioImage": {},
+    "PholioMock": {},
+    "PholioTransaction": {},
+    "PholioTransactionComment": {}
+  },
+  "phabricator_phortune": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PhortuneAccount": {},
+    "PhortuneAccountTransaction": {},
+    "PhortuneCart": {},
+    "PhortuneCartTransaction": {},
+    "PhortuneCharge": {},
+    "PhortuneMerchant": {},
+    "PhortuneMerchantTransaction": {},
+    "PhortunePaymentMethod": {},
+    "PhortunePaymentProviderConfig": {},
+    "PhortunePaymentProviderConfigTransaction": {},
+    "PhortuneProduct": {},
+    "PhortunePurchase": {}
+  },
+  "phabricator_phragment": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PhragmentFragment": {},
+    "PhragmentFragmentVersion": {},
+    "PhragmentSnapshot": {},
+    "PhragmentSnapshotChild": {}
+  },
+  "phabricator_phrequent": {
+    "PhrequentUserTime": {}
+  },
+  "phabricator_phriction": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PhrictionContent": {},
+    "PhrictionDocument": {},
+    "PhrictionTransaction": {},
+    "PhrictionTransactionComment": {}
+  },
+  "phabricator_policy": {
+    "Policy": {}
+  },
+  "phabricator_ponder": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PonderAnswer": {},
+    "PonderAnswerTransaction": {},
+    "PonderAnswerTransactionComment": {},
+    "PonderQuestion": {},
+    "PonderQuestionTransaction": {},
+    "PonderQuestionTransactionComment": {}
+  },
+  "phabricator_project": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "Project": {
+      "__code__": [
+        "columns = relationship('ProjectColumn')"
+      ]
+    },
+    "ProjectColumn": {
+      "projectPHID": {
+        "ForeignKey": "project.phid"
+      },
+      "__code__": [
+        "positions = relationship('ProjectColumnPosition')"
+      ]
+    },
+    "ProjectColumnPosition": {
+      "columnPHID": {
+        "ForeignKey": "project_column.phid"
+      }
+    },
+    "ProjectColumnTransaction": {},
+    "ProjectCustomFieldNumericIndex": {},
+    "ProjectCustomFieldStorage": {},
+    "ProjectCustomFieldstringIndex": {},
+    "ProjectDataSourceToken": {},
+    "ProjectSlug": {},
+    "ProjectTransaction": {}
+  },
+  "phabricator_releeph": {
+    "ReleephBranch": {},
+    "ReleephBranchTransaction": {},
+    "ReleephProductTransaction": {},
+    "ReleephProject": {},
+    "ReleephRequest": {},
+    "ReleephRequestTransaction": {},
+    "ReleephRequestTransactionComment": {}
+  },
+  "phabricator_repository": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "Repository": {},
+    "RepositoryArcanistProject": {},
+    "RepositoryAuditRequest": {},
+    "RepositoryBadCommit": {},
+    "RepositoryBranch": {},
+    "RepositoryCommit": {},
+    "RepositoryCommitDatum": {},
+    "RepositoryCoverage": {},
+    "RepositoryFileSystem": {},
+    "RepositoryLintMessage": {},
+    "RepositoryMirror": {},
+    "RepositoryParent": {},
+    "RepositoryPath": {},
+    "RepositoryPathChange": {},
+    "RepositoryPushEvent": {},
+    "RepositoryPushLog": {},
+    "RepositoryRefCursor": {},
+    "RepositoryStatusMessage": {},
+    "RepositorySummary": {},
+    "RepositoryTransaction": {},
+    "RepositoryVCSPassword": {}
+  },
+  "phabricator_search": {
+    "SearchDocument": {},
+    "SearchNamedQuery": {},
+    "SearchSavedQuery": {}
+  },
+  "phabricator_slowvote": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "SlowvoteChoice": {},
+    "SlowvoteOption": {},
+    "SlowvotePoll": {},
+    "SlowvoteTransaction": {},
+    "SlowvoteTransactionComment": {}
+  },
+  "phabricator_system": {
+    "SystemActionLog": {},
+    "SystemDestructionLog": {}
+  },
+  "phabricator_token": {
+    "TokenCount": {},
+    "TokenGiven": {}
+  },
+  "phabricator_user": {
+    "Edge": {},
+    "EdgeDatum": {},
+    "PhabricatorSession": {},
+    "User": {
+      "__code__": [
+        "emails = relationship('UserEmail')",
+        "externalAccounts = relationship('UserExternalAccount')",
+        "logs = relationship('UserLog')",
+        "preference = relationship('UserPreference', uselist=False, backref='maniphest_user')",
+        "profile = relationship('UserProfile', uselist=False, backref='maniphest_user')",
+        "transactions = relationship('UserTransaction')"
+      ]
+    },
+    "UserConfiguredCustomFieldStorage": {},
+    "UserCustomFieldNumericIndex": {},
+    "UserCustomFieldStringIndex": {},
+    "UserEmail": {
+      "userPHID": {
+        "ForeignKey": "user.phid"
+      }
+    },
+    "UserExternalAccount": {
+      "userPHID": {
+        "ForeignKey": "user.phid"
+      }
+    },
+    "UserLog": {
+      "userPHID": {
+        "ForeignKey": "user.phid"
+      }
+    },
+    "UserPreference": {
+      "userPHID": {
+        "ForeignKey": "user.phid"
+      }
+    },
+    "UserProfile": {
+      "userPHID": {
+        "ForeignKey": "user.phid"
+      }
+    },
+    "UserTransaction": {
+      "authorPHID": {
+        "ForeignKey": "user.phid"
+      }
+    }
+  },
+  "phabricator_worker": {
+    "LiskCounter": {},
+    "WorkerActivetask": {},
+    "WorkerArchivetask": {},
+    "WorkerTaskDatum": {}
+  },
+  "phabricator_xhpastview": {
+    "XhpastviewParseTree": {}
+  },
+  "phabricator_xhprof": {
+    "XhprofSample": {}
+  }
+}
