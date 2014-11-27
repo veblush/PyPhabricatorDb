@@ -3,7 +3,6 @@ import codecs
 from collections import OrderedDict
 from pyphabricatordb import *
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 def create_session():
     DBSession = sessionmaker()

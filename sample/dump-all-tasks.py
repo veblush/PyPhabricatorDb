@@ -1,7 +1,6 @@
 import sys
 from pyphabricatordb import *
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 def get_user(session, phid):
     return session.query(user.User).filter(user.User.phid == phid).first()
