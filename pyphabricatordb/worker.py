@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BigInteger, Column, Index, Integer, String
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -52,7 +52,7 @@ class WorkerArchivetask(Base):
     priority = Column(Integer, nullable=False)
 
 
-class WorkerTaskDatum(Base):
+class WorkerTaskData(Base):
     __tablename__ = 'worker_taskdata'
 
     id = Column(Integer, primary_key=True)

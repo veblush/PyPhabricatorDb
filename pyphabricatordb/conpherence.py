@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BigInteger, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,8 +13,8 @@ metadata = Base.metadata
 class ConpherenceParticipant(Base):
     __tablename__ = 'conpherence_participant'
     __table_args__ = (
-        Index('conpherencePHID', 'conpherencePHID', 'participantPHID', unique=True),
         Index('unreadCount', 'participantPHID', 'participationStatus'),
+        Index('conpherencePHID', 'conpherencePHID', 'participantPHID', unique=True),
         Index('participationIndex', 'participantPHID', 'dateTouched', 'id')
     )
 
@@ -100,7 +100,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)

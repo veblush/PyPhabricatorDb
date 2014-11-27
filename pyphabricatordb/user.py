@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, BigInteger, Column, Index, Integer, String, Table, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -75,12 +75,12 @@ class User(Base):
     accountSecret = Column(BINARY(64), nullable=False)
     isEnrolledInMultiFactor = Column(Integer, nullable=False, server_default=text("'0'"))
 
-    emails = relationship('UserEmail')
-    externalAccounts = relationship('UserExternalAccount')
-    logs = relationship('UserLog')
-    preference = relationship('UserPreference', uselist=False, backref='maniphest_user')
-    profile = relationship('UserProfile', uselist=False, backref='maniphest_user')
-    transactions = relationship('UserTransaction')
+    emails = relationship('UserEmail', backref='user')
+    externalAccounts = relationship('UserExternalAccount', backref='user')
+    logs = relationship('UserLog', backref='user')
+    preferences = relationship('UserPreferences', uselist=False, backref='user')
+    profile = relationship('UserProfile', uselist=False, backref='user')
+    transactions = relationship('UserTransaction', backref='user')
 
 
 class UserConfiguredCustomFieldStorage(Base):
@@ -98,8 +98,8 @@ class UserConfiguredCustomFieldStorage(Base):
 class UserCustomFieldNumericIndex(Base):
     __tablename__ = 'user_customfieldnumericindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -165,11 +165,11 @@ class UserExternalAccount(Base):
 class UserLog(Base):
     __tablename__ = 'user_log'
     __table_args__ = (
+        Index('actorPHID', 'actorPHID', 'dateCreated'),
+        Index('remoteAddr', 'remoteAddr', 'dateCreated'),
         Index('session', 'session', 'dateCreated'),
         Index('userPHID', 'userPHID', 'dateCreated'),
-        Index('action', 'action', 'dateCreated'),
-        Index('actorPHID', 'actorPHID', 'dateCreated'),
-        Index('remoteAddr', 'remoteAddr', 'dateCreated')
+        Index('action', 'action', 'dateCreated')
     )
 
     id = Column(Integer, primary_key=True)
@@ -192,7 +192,7 @@ t_user_nametoken = Table(
 )
 
 
-class UserPreference(Base):
+class UserPreferences(Base):
     __tablename__ = 'user_preferences'
 
     id = Column(Integer, primary_key=True)

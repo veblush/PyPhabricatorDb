@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)

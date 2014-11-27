@@ -7,14 +7,14 @@ import re
 
 def generate_model(db_url, db_name, config, output_path):
     file_name = (db_name[12:] if db_name.startswith("phabricator_") else db_name) + ".py"
-    src = subprocess.check_output(["sqlacodegen", db_url + "/" + db_name])
+    src = subprocess.check_output(["sqlacodegen", "--noinflect", db_url + "/" + db_name])
 
     # import required type
     mo = re.search(r"from sqlalchemy import .*", src)
     if mo:
         src = (src[:mo.end(0) + 1] + 
                "from sqlalchemy import String, Unicode, ForeignKey\n" + 
-               "from sqlalchemy.orm import relationship\n" +
+               "from sqlalchemy.orm import relationship, backref\n" +
                "from dbdatetime import dbdatetime\n" +
                src[mo.end(0) + 1:])
 

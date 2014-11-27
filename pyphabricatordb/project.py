@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, BigInteger, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -52,14 +52,14 @@ class Project(Base):
     icon = Column(Unicode(32), nullable=False, index=True)
     color = Column(Unicode(32), nullable=False, index=True)
 
-    columns = relationship('ProjectColumn')
+    columns = relationship('ProjectColumn', backref='project')
 
 
 class ProjectColumn(Base):
     __tablename__ = 'project_column'
     __table_args__ = (
-        Index('key_status', 'projectPHID', 'status', 'sequence'),
-        Index('key_sequence', 'projectPHID', 'sequence')
+        Index('key_sequence', 'projectPHID', 'sequence'),
+        Index('key_status', 'projectPHID', 'status', 'sequence')
     )
 
     id = Column(Integer, primary_key=True)
@@ -72,15 +72,15 @@ class ProjectColumn(Base):
     dateModified = Column(dbdatetime, nullable=False)
     properties = Column(Unicode, nullable=False)
 
-    positions = relationship('ProjectColumnPosition')
+    positions = relationship('ProjectColumnPosition', backref='column')
 
 
 class ProjectColumnPosition(Base):
     __tablename__ = 'project_columnposition'
     __table_args__ = (
+        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True),
         Index('boardPHID_2', 'boardPHID', 'columnPHID', 'sequence'),
-        Index('objectPHID', 'objectPHID', 'boardPHID'),
-        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True)
+        Index('objectPHID', 'objectPHID', 'boardPHID')
     )
 
     id = Column(Integer, primary_key=True)
@@ -113,8 +113,8 @@ class ProjectColumnTransaction(Base):
 class ProjectCustomFieldNumericIndex(Base):
     __tablename__ = 'project_customfieldnumericindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)

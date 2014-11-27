@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import Column, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 

@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,9 +13,9 @@ metadata = Base.metadata
 class ReleephBranch(Base):
     __tablename__ = 'releeph_branch'
     __table_args__ = (
+        Index('releephProjectID', 'releephProjectID', 'symbolicName', unique=True),
         Index('releephProjectID_name', 'releephProjectID', 'name', unique=True),
-        Index('releephProjectID_2', 'releephProjectID', 'basename', unique=True),
-        Index('releephProjectID', 'releephProjectID', 'symbolicName', unique=True)
+        Index('releephProjectID_2', 'releephProjectID', 'basename', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

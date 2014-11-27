@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)

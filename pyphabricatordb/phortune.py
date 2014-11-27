@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -154,8 +154,8 @@ class PhortuneMerchantTransaction(Base):
 class PhortunePaymentMethod(Base):
     __tablename__ = 'phortune_paymentmethod'
     __table_args__ = (
-        Index('key_account', 'accountPHID', 'status'),
-        Index('key_merchant', 'merchantPHID', 'accountPHID')
+        Index('key_merchant', 'merchantPHID', 'accountPHID'),
+        Index('key_account', 'accountPHID', 'status')
     )
 
     id = Column(Integer, primary_key=True)

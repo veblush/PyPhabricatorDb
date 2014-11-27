@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, Table, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.dialects.mysql.base import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
@@ -26,7 +26,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -71,9 +71,11 @@ class RepositoryAuditRequest(Base):
 
     id = Column(Integer, primary_key=True)
     auditorPHID = Column(String, nullable=False)
-    commitPHID = Column(String, nullable=False, index=True)
+    commitPHID = Column(String, ForeignKey("repository_commit.phid"), nullable=False, index=True)
     auditStatus = Column(Unicode(64), nullable=False)
     auditReasons = Column(Unicode, nullable=False)
+
+    commit = relationship('RepositoryCommit', uselist=False)
 
 
 class RepositoryBadCommit(Base):
@@ -100,10 +102,10 @@ class RepositoryBranch(Base):
 class RepositoryCommit(Base):
     __tablename__ = 'repository_commit'
     __table_args__ = (
+        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch'),
         Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
-        Index('repositoryID_2', 'repositoryID', 'epoch'),
         Index('repositoryID', 'repositoryID', 'importStatus'),
-        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch')
+        Index('repositoryID_2', 'repositoryID', 'epoch')
     )
 
     id = Column(Integer, primary_key=True)
@@ -118,14 +120,16 @@ class RepositoryCommit(Base):
     importStatus = Column(Integer, nullable=False)
 
 
-class RepositoryCommitDatum(Base):
+class RepositoryCommitData(Base):
     __tablename__ = 'repository_commitdata'
 
     id = Column(Integer, primary_key=True)
-    commitID = Column(Integer, nullable=False, unique=True)
+    commitID = Column(Integer, ForeignKey("repository_commit.id"), nullable=False, unique=True)
     authorName = Column(Unicode, nullable=False)
     commitMessage = Column(Unicode, nullable=False)
     commitDetails = Column(Unicode, nullable=False)
+
+    commit = relationship('RepositoryCommit', backref=backref('data', uselist=False))
 
 
 class RepositoryCoverage(Base):
@@ -158,8 +162,8 @@ class RepositoryFileSystem(Base):
 class RepositoryLintMessage(Base):
     __tablename__ = 'repository_lintmessage'
     __table_args__ = (
-        Index('branchID_2', 'branchID', 'code', 'path'),
-        Index('branchID', 'branchID', 'path')
+        Index('branchID', 'branchID', 'path'),
+        Index('branchID_2', 'branchID', 'code', 'path')
     )
 
     id = Column(Integer, primary_key=True)
@@ -185,7 +189,7 @@ class RepositoryMirror(Base):
     dateModified = Column(dbdatetime, nullable=False)
 
 
-class RepositoryParent(Base):
+class RepositoryParents(Base):
     __tablename__ = 'repository_parents'
     __table_args__ = (
         Index('key_child', 'childCommitID', 'parentCommitID', unique=True),
@@ -238,8 +242,8 @@ class RepositoryPushEvent(Base):
 class RepositoryPushLog(Base):
     __tablename__ = 'repository_pushlog'
     __table_args__ = (
-        Index('key_name', 'repositoryPHID', 'refNameHash'),
-        Index('key_ref', 'repositoryPHID', 'refNew')
+        Index('key_ref', 'repositoryPHID', 'refNew'),
+        Index('key_name', 'repositoryPHID', 'refNameHash')
     )
 
     id = Column(Integer, primary_key=True)

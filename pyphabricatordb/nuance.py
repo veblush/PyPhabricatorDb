@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -36,8 +36,8 @@ class NuanceItem(Base):
     __tablename__ = 'nuance_item'
     __table_args__ = (
         Index('key_source', 'sourcePHID', 'status', 'dateNuanced', 'id'),
-        Index('key_owner', 'ownerPHID', 'status', 'dateNuanced', 'id'),
-        Index('key_contacter', 'requestorPHID', 'status', 'dateNuanced', 'id')
+        Index('key_contacter', 'requestorPHID', 'status', 'dateNuanced', 'id'),
+        Index('key_owner', 'ownerPHID', 'status', 'dateNuanced', 'id')
     )
 
     id = Column(Integer, primary_key=True)
@@ -110,8 +110,8 @@ class NuanceQueue(Base):
 class NuanceQueueItem(Base):
     __tablename__ = 'nuance_queueitem'
     __table_args__ = (
-        Index('key_queue', 'queuePHID', 'itemStatus', 'itemDateNuanced', 'id'),
-        Index('key_one_per_queue', 'itemPHID', 'queuePHID', unique=True)
+        Index('key_one_per_queue', 'itemPHID', 'queuePHID', unique=True),
+        Index('key_queue', 'queuePHID', 'itemStatus', 'itemDateNuanced', 'id')
     )
 
     id = Column(Integer, primary_key=True)
@@ -176,9 +176,9 @@ class NuanceRequestor(Base):
 class NuanceRequestorSource(Base):
     __tablename__ = 'nuance_requestorsource'
     __table_args__ = (
+        Index('key_source_key', 'sourcePHID', 'sourceKey', unique=True),
         Index('key_source', 'sourcePHID', 'id'),
-        Index('key_requestor', 'requestorPHID', 'id'),
-        Index('key_source_key', 'sourcePHID', 'sourceKey', unique=True)
+        Index('key_requestor', 'requestorPHID', 'id')
     )
 
     id = Column(Integer, primary_key=True)

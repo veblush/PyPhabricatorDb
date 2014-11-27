@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BigInteger, Column, Index, Integer, String, Table, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -10,7 +10,7 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class FeedStoryDatum(Base):
+class FeedStoryData(Base):
     __tablename__ = 'feed_storydata'
 
     id = Column(Integer, primary_key=True)

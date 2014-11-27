@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, BigInteger, Column, Float, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -35,8 +35,8 @@ class EdgeDatum(Base):
 class CustomFieldNumericIndex(Base):
     __tablename__ = 'maniphest_customfieldnumericindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -60,8 +60,8 @@ class CustomFieldStorage(Base):
 class CustomFieldStringIndex(Base):
     __tablename__ = 'maniphest_customfieldstringindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -81,10 +81,10 @@ class NameIndex(Base):
 class Task(Base):
     __tablename__ = 'maniphest_task'
     __table_args__ = (
-        Index('ownerPHID', 'ownerPHID', 'status'),
-        Index('authorPHID', 'authorPHID', 'status'),
+        Index('priority_2', 'priority', 'subpriority'),
         Index('priority', 'priority', 'status'),
-        Index('priority_2', 'priority', 'subpriority')
+        Index('ownerPHID', 'ownerPHID', 'status'),
+        Index('authorPHID', 'authorPHID', 'status')
     )
 
     id = Column(Integer, primary_key=True)
@@ -108,9 +108,9 @@ class Task(Base):
     viewPolicy = Column(String, nullable=False)
     editPolicy = Column(String, nullable=False)
 
-    subscribers = relationship('TaskSubscriber')
-    transactions = relationship('Transaction')
-    customFieldStorages = relationship('CustomFieldStorage')
+    subscribers = relationship('TaskSubscriber', backref='task')
+    transactions = relationship('Transaction', backref='task')
+    customFieldStorages = relationship('CustomFieldStorage', backref='task')
 
 
 class TaskSubscriber(Base):
@@ -142,7 +142,7 @@ class Transaction(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
 
-    comment = relationship('TransactionComment', uselist=False, backref='maniphest_transaction')
+    comment = relationship('TransactionComment', uselist=False, backref='transaction')
 
 
 class TransactionComment(Base):

@@ -11,10 +11,17 @@
     "AlmanacService": {},
     "AlmanacServiceTransaction": {},
     "Edge": {},
-    "EdgeDatum": {}
+    "EdgeData": {}
   },
   "phabricator_audit": {
-    "AuditTransaction": {},
+    "AuditTransaction": {
+      "commentPHID": {
+        "ForeignKey": "audit_transaction_comment.phid"
+      },
+      "__code__": [
+        "comment = relationship('AuditTransactionComment', uselist=False, backref='transaction')"
+      ]
+    },
     "AuditTransactionComment": {}
   },
   "phabricator_auth": {
@@ -51,7 +58,7 @@
     "ConpherenceTransaction": {},
     "ConpherenceTransactionComment": {},
     "Edge": {},
-    "EdgeDatum": {}
+    "EdgeData": {}
   },
   "phabricator_countdown": {
     "CountDown": {}
@@ -67,7 +74,7 @@
     "DashboardPanelTransaction": {},
     "DashboardTransaction": {},
     "Edge": {},
-    "EdgeDatum": {}
+    "EdgeData": {}
   },
   "phabricator_differential": {
     "DifferentialChangeset": {},
@@ -85,7 +92,7 @@
     "DifferentialTransaction": {},
     "DifferentialTransactionComment": {},
     "Edge": {},
-    "EdgeDatum": {}
+    "EdgeData": {}
   },
   "phabricator_diviner": {
     "DivinerLiveAtom": {},
@@ -95,7 +102,7 @@
   "phabricator_doorkeeper": {
     "DoorkeeperExternalObject": {},
     "Edge": {},
-    "EdgeDatum": {}
+    "EdgeData": {}
   },
   "phabricator_draft": {
     "Draft": {}
@@ -113,11 +120,11 @@
     "FactRaw": {}
   },
   "phabricator_feed": {
-    "FeedStoryDatum": {}
+    "FeedStoryData": {}
   },
   "phabricator_file": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "File": {},
     "FileImageMacro": {},
     "FileStorageBlob": {},
@@ -132,7 +139,7 @@
   },
   "phabricator_fund": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "FundBacker": {},
     "FundBackerTransaction": {},
     "FundInitiative": {},
@@ -140,7 +147,7 @@
   },
   "phabricator_harbormaster": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "HarbormasterBuild": {},
     "HarbormasterBuildable": {},
     "HarbormasterBuildableTransaction": {},
@@ -172,7 +179,7 @@
   },
   "phabricator_legalpad": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "LegalpadDocument": {},
     "LegalpadDocumentBody": {},
     "LegalpadDocumentSignature": {},
@@ -181,7 +188,7 @@
   },
   "phabricator_maniphest": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "CustomFieldNumericIndex": {},
     "CustomFieldStorage": {
       "objectPHID": {
@@ -192,9 +199,9 @@
     "NameIndex": {},
     "Task": {
       "__code__": [
-        "subscribers = relationship('TaskSubscriber')",
-        "transactions = relationship('Transaction')",
-        "customFieldStorages = relationship('CustomFieldStorage')"
+        "subscribers = relationship('TaskSubscriber', backref='task')",
+        "transactions = relationship('Transaction', backref='task')",
+        "customFieldStorages = relationship('CustomFieldStorage', backref='task')"
       ]
     },
     "TaskSubscriber": {
@@ -207,7 +214,7 @@
         "ForeignKey": "maniphest_task.phid"
       },
       "__code__": [
-        "comment = relationship('TransactionComment', uselist=False, backref='maniphest_transaction')"
+        "comment = relationship('TransactionComment', uselist=False, backref='transaction')"
       ]
     },
     "TransactionComment": {
@@ -221,7 +228,7 @@
   },
   "phabricator_metamta": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "MetaMtaMail": {},
     "MetaMtaMailingList": {},
     "MetaMtaReceivedMail": {},
@@ -229,7 +236,7 @@
   },
   "phabricator_nuance": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "NuanceItem": {},
     "NuanceItemTransaction": {},
     "NuanceItemTransactionComment": {},
@@ -258,21 +265,21 @@
   },
   "phabricator_passphrase": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PassphraseCredential": {},
     "PassphraseCredentialTransaction": {},
     "PassphraseSecret": {}
   },
   "phabricator_pastebin": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PastebinPaste": {},
     "PastebinPasteTransaction": {},
     "PastebinPasteTransactionComment": {}
   },
   "phabricator_phame": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PhameBLog": {},
     "PhamePost": {}
   },
@@ -282,7 +289,7 @@
   },
   "phabricator_pholio": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PholioImage": {},
     "PholioMock": {},
     "PholioTransaction": {},
@@ -290,7 +297,7 @@
   },
   "phabricator_phortune": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PhortuneAccount": {},
     "PhortuneAccountTransaction": {},
     "PhortuneCart": {},
@@ -306,7 +313,7 @@
   },
   "phabricator_phragment": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PhragmentFragment": {},
     "PhragmentFragmentVersion": {},
     "PhragmentSnapshot": {},
@@ -317,7 +324,7 @@
   },
   "phabricator_phriction": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PhrictionContent": {},
     "PhrictionDocument": {},
     "PhrictionTransaction": {},
@@ -328,7 +335,7 @@
   },
   "phabricator_ponder": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PonderAnswer": {},
     "PonderAnswerTransaction": {},
     "PonderAnswerTransactionComment": {},
@@ -338,10 +345,10 @@
   },
   "phabricator_project": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "Project": {
       "__code__": [
-        "columns = relationship('ProjectColumn')"
+        "columns = relationship('ProjectColumn', backref='project')"
       ]
     },
     "ProjectColumn": {
@@ -349,7 +356,7 @@
         "ForeignKey": "project.phid"
       },
       "__code__": [
-        "positions = relationship('ProjectColumnPosition')"
+        "positions = relationship('ProjectColumnPosition', backref='column')"
       ]
     },
     "ProjectColumnPosition": {
@@ -376,19 +383,33 @@
   },
   "phabricator_repository": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "Repository": {},
     "RepositoryArcanistProject": {},
-    "RepositoryAuditRequest": {},
+    "RepositoryAuditRequest": {
+      "commitPHID": {
+        "ForeignKey": "repository_commit.phid"
+      },
+      "__code__": [
+        "commit = relationship('RepositoryCommit', uselist=False)"
+      ]
+    },
     "RepositoryBadCommit": {},
     "RepositoryBranch": {},
     "RepositoryCommit": {},
-    "RepositoryCommitDatum": {},
+    "RepositoryCommitData": {
+      "commitID": {
+        "ForeignKey": "repository_commit.id"
+      },
+      "__code__": [
+        "commit = relationship('RepositoryCommit', backref=backref('data', uselist=False))"
+      ]
+    },
     "RepositoryCoverage": {},
     "RepositoryFileSystem": {},
     "RepositoryLintMessage": {},
     "RepositoryMirror": {},
-    "RepositoryParent": {},
+    "RepositoryParents": {},
     "RepositoryPath": {},
     "RepositoryPathChange": {},
     "RepositoryPushEvent": {},
@@ -406,7 +427,7 @@
   },
   "phabricator_slowvote": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "SlowvoteChoice": {},
     "SlowvoteOption": {},
     "SlowvotePoll": {},
@@ -423,16 +444,16 @@
   },
   "phabricator_user": {
     "Edge": {},
-    "EdgeDatum": {},
+    "EdgeData": {},
     "PhabricatorSession": {},
     "User": {
       "__code__": [
-        "emails = relationship('UserEmail')",
-        "externalAccounts = relationship('UserExternalAccount')",
-        "logs = relationship('UserLog')",
-        "preference = relationship('UserPreference', uselist=False, backref='maniphest_user')",
-        "profile = relationship('UserProfile', uselist=False, backref='maniphest_user')",
-        "transactions = relationship('UserTransaction')"
+        "emails = relationship('UserEmail', backref='user')",
+        "externalAccounts = relationship('UserExternalAccount', backref='user')",
+        "logs = relationship('UserLog', backref='user')",
+        "preferences = relationship('UserPreferences', uselist=False, backref='user')",
+        "profile = relationship('UserProfile', uselist=False, backref='user')",
+        "transactions = relationship('UserTransaction', backref='user')"
       ]
     },
     "UserConfiguredCustomFieldStorage": {},
@@ -453,7 +474,7 @@
         "ForeignKey": "user.phid"
       }
     },
-    "UserPreference": {
+    "UserPreferences": {
       "userPHID": {
         "ForeignKey": "user.phid"
       }
@@ -473,7 +494,7 @@
     "LiskCounter": {},
     "WorkerActivetask": {},
     "WorkerArchivetask": {},
-    "WorkerTaskDatum": {}
+    "WorkerTaskData": {}
   },
   "phabricator_xhpastview": {
     "XhpastviewParseTree": {}

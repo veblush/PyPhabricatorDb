@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, BigInteger, Column, Index, Integer, String, Table, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.dialects.mysql.base import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
@@ -58,8 +58,8 @@ class DifferentialCommit(Base):
 class DifferentialCustomFieldNumericIndex(Base):
     __tablename__ = 'differential_customfieldnumericindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -83,8 +83,8 @@ class DifferentialCustomFieldStorage(Base):
 class DifferentialCustomFieldStringIndex(Base):
     __tablename__ = 'differential_customfieldstringindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -237,8 +237,8 @@ class DifferentialTransaction(Base):
 class DifferentialTransactionComment(Base):
     __tablename__ = 'differential_transaction_comment'
     __table_args__ = (
-        Index('key_draft', 'authorPHID', 'transactionPHID'),
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
+        Index('key_draft', 'authorPHID', 'transactionPHID')
     )
 
     id = Column(Integer, primary_key=True)
@@ -266,8 +266,8 @@ class DifferentialTransactionComment(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -278,7 +278,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)

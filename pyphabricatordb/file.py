@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, BigInteger, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.dialects.mysql.base import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
@@ -26,7 +26,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -104,8 +104,8 @@ class FileTransaction(Base):
 class FileTransactionComment(Base):
     __tablename__ = 'file_transaction_comment'
     __table_args__ = (
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
-        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True)
+        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True),
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

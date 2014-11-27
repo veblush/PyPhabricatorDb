@@ -1,7 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -25,7 +25,7 @@ class Edge(Base):
     dataID = Column(Integer)
 
 
-class EdgeDatum(Base):
+class EdgeData(Base):
     __tablename__ = 'edgedata'
 
     id = Column(Integer, primary_key=True)
@@ -75,8 +75,8 @@ class LegalpadDocumentBody(Base):
 class LegalpadDocumentSignature(Base):
     __tablename__ = 'legalpad_documentsignature'
     __table_args__ = (
-        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion'),
-        Index('key_signer', 'signerPHID', 'dateModified')
+        Index('key_signer', 'signerPHID', 'dateModified'),
+        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion')
     )
 
     id = Column(Integer, primary_key=True)
@@ -118,8 +118,8 @@ class LegalpadTransaction(Base):
 class LegalpadTransactionComment(Base):
     __tablename__ = 'legalpad_transaction_comment'
     __table_args__ = (
-        Index('key_draft', 'authorPHID', 'documentID', 'transactionPHID', unique=True),
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
+        Index('key_draft', 'authorPHID', 'documentID', 'transactionPHID', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
