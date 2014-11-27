@@ -1,3 +1,6 @@
+import connector
+import hash
+
 import almanac
 import audit
 import auth
@@ -21,7 +24,6 @@ import feed
 import file
 import flag
 import fund
-import hash
 import harbormaster
 import herald
 import legalpad
