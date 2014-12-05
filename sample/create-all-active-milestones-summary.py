@@ -27,8 +27,6 @@ def get_task_with_tag(session, phid):
     return t
 
 def task_project_valid_filter(tasks, projectPHID):
-    #for t in tasks:
-    #    print t.id, t.phid, t.edgeProjectPHIDs, projectPHID
     return [t for t in tasks if projectPHID in t.edgeProjectPHIDs]
 
 def get_user(session, phid):
@@ -113,8 +111,6 @@ def dump_all_active_milestones_summary(session, file):
             for t in column_item[1]:
                 t.column = column_item[0]
                 tasks.append(t)
-                if t.owner and t.owner.userName == 'dannypark' and t.status == 'open':
-                    print "!", milestone, ":", column_item[0].name, column_item[0].project.name, t.id, t.phid
         dump_milestone_summary(session, file, milestone, tasks)
 
 def main():
