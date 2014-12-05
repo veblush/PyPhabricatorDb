@@ -3,6 +3,7 @@ import codecs
 from collections import OrderedDict
 from pyphabricatordb import *
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import and_
 
 def create_session():
     DBSession = sessionmaker()
@@ -20,7 +21,15 @@ def get_task_with_tag(session, phid):
         for customFieldStorage in t.customFieldStorages:
             if customFieldStorage.fieldIndex == estimatedTimeFieldIndex:
                 t.estimatedTime = int(customFieldStorage.fieldValue)
+        t.edgeProjectPHIDs = [
+            edge.dst for edge in 
+            session.query(maniphest.Edge).filter(and_(maniphest.Edge.src == phid, maniphest.Edge.type == 41)).all()]
     return t
+
+def task_project_valid_filter(tasks, projectPHID):
+    #for t in tasks:
+    #    print t.id, t.phid, t.edgeProjectPHIDs, projectPHID
+    return [t for t in tasks if projectPHID in t.edgeProjectPHIDs]
 
 def get_user(session, phid):
     return session.query(user.User).filter(user.User.phid == phid).first()
@@ -32,7 +41,8 @@ def get_active_column_items(session):
     activeColumns = [column 
                      for column in session.query(project.ProjectColumn).filter(project.ProjectColumn.status == 0).all()
                      if get_project(session, column.projectPHID).status == "0"]
-    return [(column, [get_task_with_tag(session, position.objectPHID) for position in column.positions]) for column in activeColumns]
+    return [(column, task_project_valid_filter([get_task_with_tag(session, position.objectPHID) for position in column.positions], column.project.phid))
+            for column in activeColumns]
 
 def dump_milestone_summary(session, file, milestone, tasks):
     file.write("**{0}**\n".format(milestone if len(milestone) > 0 else "Backlog"))
@@ -48,7 +58,7 @@ def dump_milestone_summary(session, file, milestone, tasks):
         owner_lists = owner_lists[1:] + [owner_lists[0]]
     project_lists = sorted(set((t.column.project) for t in all_tasks), key=lambda p: p.name)
 
-    file.write(u"||" + u"|".join((u"[[/p/{0}/ | {1}]]".format(owner.id, owner.realName) if owner else "-") for owner in owner_lists) + u"|*|\n")
+    file.write(u"||" + u"|".join((u"[[/p/{0}/ | {1}]]".format(owner.userName, owner.realName) if owner else "-") for owner in owner_lists) + u"|*|\n")
     file.write(u"|--" * (len(owner_lists) + 2) + u"\n")
     for project in project_lists:
         project_shortname = project.name[project.name.find("_")+1:] if project.name.find("_") != -1 else project.name
@@ -103,6 +113,8 @@ def dump_all_active_milestones_summary(session, file):
             for t in column_item[1]:
                 t.column = column_item[0]
                 tasks.append(t)
+                if t.owner and t.owner.userName == 'dannypark' and t.status == 'open':
+                    print "!", milestone, ":", column_item[0].name, column_item[0].project.name, t.id, t.phid
         dump_milestone_summary(session, file, milestone, tasks)
 
 def main():
