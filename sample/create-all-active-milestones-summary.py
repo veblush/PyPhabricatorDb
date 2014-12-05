@@ -36,7 +36,7 @@ def get_project(session, phid):
     return session.query(project.Project).filter(project.Project.phid == phid).first()
 
 def get_active_column_items(session):
-    activeColumns = [column 
+    activeColumns = [column
                      for column in session.query(project.ProjectColumn).filter(project.ProjectColumn.status == 0).all()
                      if get_project(session, column.projectPHID).status == "0"]
     return [(column, task_project_valid_filter([get_task_with_tag(session, position.objectPHID) for position in column.positions], column.project.phid))
@@ -106,6 +106,7 @@ def dump_all_active_milestones_summary(session, file):
     for column_item in column_items:
         milestones.setdefault(column_item[0].name, []).append(column_item)
     for milestone, column_items in milestones.iteritems():
+        if len(milestone) == 0: continue
         tasks = []
         for column_item in column_items:
             for t in column_item[1]:
