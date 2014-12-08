@@ -101,14 +101,16 @@ def dump_milestone_summary(session, file, milestone, tasks):
     file.write(u"\n")
 
 def dump_all_active_milestones_summary(session, file):
-    column_items = sorted(get_active_column_items(session), key=lambda x: x[0].sequence)
-    milestones = OrderedDict()
-    for column_item in column_items:
+    milestones = dict()
+    milestones_order = dict()
+    for column_item in get_active_column_items(session):
         milestones.setdefault(column_item[0].name, []).append(column_item)
-    for milestone, column_items in milestones.iteritems():
+        milestones_order.setdefault(column_item[0].name, column_item[0].sequence)
+        milestones_order[column_item[0].name] = max(milestones_order[column_item[0].name], column_item[0].sequence)
+    for milestone, _ in sorted(milestones_order.iteritems(), key=lambda x: x[1]):
         if len(milestone) == 0: continue
         tasks = []
-        for column_item in column_items:
+        for column_item in milestones[milestone]:
             for t in column_item[1]:
                 t.column = column_item[0]
                 tasks.append(t)
