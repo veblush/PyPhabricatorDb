@@ -23,6 +23,7 @@ class DaemonLog(Base):
     dateModified = Column(dbdatetime, nullable=False)
     envHash = Column(BINARY(40), nullable=False)
     status = Column(Unicode(8), nullable=False, index=True)
+    runningAsUser = Column(Unicode(255))
 
 
 class DaemonLogEvent(Base):

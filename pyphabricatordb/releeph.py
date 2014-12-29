@@ -13,8 +13,8 @@ metadata = Base.metadata
 class ReleephBranch(Base):
     __tablename__ = 'releeph_branch'
     __table_args__ = (
-        Index('releephProjectID', 'releephProjectID', 'symbolicName', unique=True),
         Index('releephProjectID_name', 'releephProjectID', 'name', unique=True),
+        Index('releephProjectID', 'releephProjectID', 'symbolicName', unique=True),
         Index('releephProjectID_2', 'releephProjectID', 'basename', unique=True)
     )
 

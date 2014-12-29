@@ -104,8 +104,8 @@ class FileTransaction(Base):
 class FileTransactionComment(Base):
     __tablename__ = 'file_transaction_comment'
     __table_args__ = (
-        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True),
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
+        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

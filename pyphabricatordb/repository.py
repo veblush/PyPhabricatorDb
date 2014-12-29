@@ -49,6 +49,7 @@ class Repository(Base):
     editPolicy = Column(String, nullable=False)
     pushPolicy = Column(String, nullable=False)
     credentialPHID = Column(String)
+    almanacServicePHID = Column(String)
 
 
 class RepositoryArcanistProject(Base):
@@ -102,10 +103,10 @@ class RepositoryBranch(Base):
 class RepositoryCommit(Base):
     __tablename__ = 'repository_commit'
     __table_args__ = (
-        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch'),
-        Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
         Index('repositoryID', 'repositoryID', 'importStatus'),
-        Index('repositoryID_2', 'repositoryID', 'epoch')
+        Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
+        Index('repositoryID_2', 'repositoryID', 'epoch'),
+        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch')
     )
 
     id = Column(Integer, primary_key=True)
@@ -242,8 +243,8 @@ class RepositoryPushEvent(Base):
 class RepositoryPushLog(Base):
     __tablename__ = 'repository_pushlog'
     __table_args__ = (
-        Index('key_ref', 'repositoryPHID', 'refNew'),
-        Index('key_name', 'repositoryPHID', 'refNameHash')
+        Index('key_name', 'repositoryPHID', 'refNameHash'),
+        Index('key_ref', 'repositoryPHID', 'refNew')
     )
 
     id = Column(Integer, primary_key=True)

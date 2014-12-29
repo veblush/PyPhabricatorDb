@@ -75,8 +75,8 @@ class LegalpadDocumentBody(Base):
 class LegalpadDocumentSignature(Base):
     __tablename__ = 'legalpad_documentsignature'
     __table_args__ = (
-        Index('key_signer', 'signerPHID', 'dateModified'),
-        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion')
+        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion'),
+        Index('key_signer', 'signerPHID', 'dateModified')
     )
 
     id = Column(Integer, primary_key=True)

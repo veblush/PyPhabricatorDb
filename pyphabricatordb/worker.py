@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import BigInteger, Column, Index, Integer, String
+from sqlalchemy import BigInteger, Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -31,6 +31,7 @@ class WorkerActivetask(Base):
     dataID = Column(Integer, unique=True)
     failureTime = Column(Integer, index=True)
     priority = Column(Integer, nullable=False)
+    objectPHID = Column(String, index=True)
 
 
 class WorkerArchivetask(Base):
@@ -50,6 +51,7 @@ class WorkerArchivetask(Base):
     dateCreated = Column(dbdatetime, nullable=False, index=True)
     dateModified = Column(dbdatetime, nullable=False)
     priority = Column(Integer, nullable=False)
+    objectPHID = Column(String, index=True)
 
 
 class WorkerTaskData(Base):

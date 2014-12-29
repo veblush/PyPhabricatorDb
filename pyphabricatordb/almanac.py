@@ -58,6 +58,7 @@ class AlmanacDevice(Base):
     mailKey = Column(BINARY(20), nullable=False)
     viewPolicy = Column(String, nullable=False)
     editPolicy = Column(String, nullable=False)
+    isLocked = Column(Integer, nullable=False)
 
 
 class AlmanacDeviceTransaction(Base):
@@ -154,6 +155,8 @@ class AlmanacService(Base):
     editPolicy = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    serviceClass = Column(Unicode(64), nullable=False, index=True)
+    isLocked = Column(Integer, nullable=False)
 
 
 class AlmanacServiceTransaction(Base):
@@ -179,8 +182,8 @@ class AlmanacServiceTransaction(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)

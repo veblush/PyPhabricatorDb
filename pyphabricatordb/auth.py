@@ -78,6 +78,7 @@ class AuthSSHkey(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     keyIndex = Column(BINARY(12), nullable=False, unique=True)
+    isTrusted = Column(Integer, nullable=False)
 
 
 class AuthTemporaryToken(Base):

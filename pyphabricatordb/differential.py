@@ -83,8 +83,8 @@ class DifferentialCustomFieldStorage(Base):
 class DifferentialCustomFieldStringIndex(Base):
     __tablename__ = 'differential_customfieldstringindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -117,6 +117,7 @@ class DifferentialDiff(Base):
     dateModified = Column(dbdatetime, nullable=False)
     description = Column(Unicode(255))
     repositoryUUID = Column(Unicode(64))
+    viewPolicy = Column(String, nullable=False)
 
 
 class DifferentialDiffProperty(Base):
@@ -129,6 +130,26 @@ class DifferentialDiffProperty(Base):
     diffID = Column(Integer, nullable=False)
     name = Column(Unicode(128), nullable=False)
     data = Column(Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+
+
+class DifferentialDifftransaction(Base):
+    __tablename__ = 'differential_difftransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
 
@@ -237,8 +258,8 @@ class DifferentialTransaction(Base):
 class DifferentialTransactionComment(Base):
     __tablename__ = 'differential_transaction_comment'
     __table_args__ = (
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
-        Index('key_draft', 'authorPHID', 'transactionPHID')
+        Index('key_draft', 'authorPHID', 'transactionPHID'),
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
@@ -266,8 +287,8 @@ class DifferentialTransactionComment(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)

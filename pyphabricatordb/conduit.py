@@ -46,3 +46,18 @@ class ConduitMethodCallLog(Base):
     dateCreated = Column(dbdatetime, nullable=False, index=True)
     dateModified = Column(dbdatetime, nullable=False)
     callerPHID = Column(String)
+
+
+class ConduitToken(Base):
+    __tablename__ = 'conduit_token'
+    __table_args__ = (
+        Index('key_object', 'objectPHID', 'tokenType'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    objectPHID = Column(String, nullable=False)
+    tokenType = Column(Unicode(32), nullable=False)
+    token = Column(Unicode(32), nullable=False, unique=True)
+    expires = Column(Integer, index=True)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)

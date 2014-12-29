@@ -81,17 +81,16 @@ class NameIndex(Base):
 class Task(Base):
     __tablename__ = 'maniphest_task'
     __table_args__ = (
-        Index('priority_2', 'priority', 'subpriority'),
-        Index('priority', 'priority', 'status'),
         Index('ownerPHID', 'ownerPHID', 'status'),
-        Index('authorPHID', 'authorPHID', 'status')
+        Index('priority_2', 'priority', 'subpriority'),
+        Index('authorPHID', 'authorPHID', 'status'),
+        Index('priority', 'priority', 'status')
     )
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
     authorPHID = Column(String, nullable=False)
     ownerPHID = Column(String)
-    ccPHIDs = Column(Unicode)
     attached = Column(Unicode, nullable=False)
     status = Column(Unicode(12), nullable=False, index=True)
     priority = Column(Integer, nullable=False)
