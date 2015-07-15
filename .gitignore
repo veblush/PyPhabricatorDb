@@ -55,4 +55,4 @@ target/
 
 # DevTest
 *devtest.*
-sample/create-all-active-milestones-summary.txt
+sample/*.txt
