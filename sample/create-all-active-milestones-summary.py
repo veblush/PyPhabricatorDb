@@ -100,7 +100,12 @@ def dump_milestone_summary(session, file, milestone, tasks):
     file.write(row + u"\n")
     file.write(u"\n")
 
-def dump_all_active_milestones_summary(session, file):
+def dump_milestone_task_list(session, file, milestone, tasks):
+    for t in tasks:
+        file.write(u"{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n".format(
+            t.id, t.title.replace("\n", ""), t.column.project.name, milestone, t.owner.realName if t.owner else "", t.status, t.estimatedTime))
+
+def dump_all_active_milestones_summary(session, summary_file, list_file):
     milestones = dict()
     milestones_order = dict()
     for column_item in get_active_column_items(session):
@@ -114,14 +119,21 @@ def dump_all_active_milestones_summary(session, file):
             for t in column_item[1]:
                 t.column = column_item[0]
                 tasks.append(t)
-        dump_milestone_summary(session, file, milestone, tasks)
+        dump_milestone_summary(session, summary_file, milestone, tasks)
+        if list_file:
+            dump_milestone_task_list(session, list_file, milestone, tasks)
 
 def main():
     db_url = sys.argv[1] if len(sys.argv) >= 2 else 'mysql://localhost'
-    file = codecs.open(sys.argv[2], "wb", "utf-8") if len(sys.argv) >= 3 else sys.stdout
+    summary_file = codecs.open(sys.argv[2], "wb", "utf-8") if len(sys.argv) >= 3 else sys.stdout
+    if sys.argv >= 4:
+        list_file = codecs.open(sys.argv[3], "wb", "utf-8")
+        list_file.write(u"\t".join([u"ID", u"Title", u"Project", u"Milestone", u"Owner", u"Status", u"EstimatedTime"]) + u"\n")
+    else:
+        list_file = None
     connector.connect_all(db_url)
     session = create_session()
-    dump_all_active_milestones_summary(session, file)
+    dump_all_active_milestones_summary(session, summary_file, list_file)
 
 if __name__ == "__main__":
     main()
