@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import BINARY, BigInteger, Column, Index, Integer, String, VARBINARY, text
+from sqlalchemy import BINARY, BigInteger, Column, Float, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -14,8 +14,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -35,6 +35,9 @@ class EdgeData(Base):
 
 class HarbormasterBuild(Base):
     __tablename__ = 'harbormaster_build'
+    __table_args__ = (
+        Index('key_planautokey', 'buildablePHID', 'planAutoKey', unique=True),
+    )
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
@@ -44,6 +47,7 @@ class HarbormasterBuild(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     buildGeneration = Column(Integer, nullable=False, server_default=text("'0'"))
+    planAutoKey = Column(Unicode(32))
 
 
 class HarbormasterBuildable(Base):
@@ -107,6 +111,22 @@ class HarbormasterBuildCommand(Base):
     dateModified = Column(dbdatetime, nullable=False)
 
 
+class HarbormasterBuildLintMessage(Base):
+    __tablename__ = 'harbormaster_buildlintmessage'
+
+    id = Column(Integer, primary_key=True)
+    buildTargetPHID = Column(String, nullable=False, index=True)
+    path = Column(Unicode, nullable=False)
+    line = Column(Integer)
+    characterOffset = Column(Integer)
+    code = Column(Unicode(32), nullable=False)
+    severity = Column(Unicode(32), nullable=False)
+    name = Column(Unicode(255), nullable=False)
+    properties = Column(Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+
+
 class HarbormasterBuildLog(Base):
     __tablename__ = 'harbormaster_buildlog'
 
@@ -148,10 +168,11 @@ class HarbormasterBuildPlan(Base):
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
-    name = Column(Unicode(255), nullable=False)
+    name = Column(Unicode(128), nullable=False, index=True)
     planStatus = Column(Unicode(32), nullable=False, index=True)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    planAutoKey = Column(Unicode(32), unique=True)
 
 
 class HarbormasterBuildPlanTransaction(Base):
@@ -176,6 +197,9 @@ class HarbormasterBuildPlanTransaction(Base):
 
 class HarbormasterBuildStep(Base):
     __tablename__ = 'harbormaster_buildstep'
+    __table_args__ = (
+        Index('key_stepautokey', 'buildPlanPHID', 'stepAutoKey', unique=True),
+    )
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
@@ -187,6 +211,7 @@ class HarbormasterBuildStep(Base):
     sequence = Column(Integer, nullable=False)
     name = Column(Unicode(255))
     description = Column(Unicode, nullable=False)
+    stepAutoKey = Column(Unicode(32))
 
 
 class HarbormasterBuildStepTransaction(Base):
@@ -251,6 +276,21 @@ class HarbormasterBuildTransaction(Base):
     dateModified = Column(dbdatetime, nullable=False)
 
 
+class HarbormasterBuildunitmessage(Base):
+    __tablename__ = 'harbormaster_buildunitmessage'
+
+    id = Column(Integer, primary_key=True)
+    buildTargetPHID = Column(String, nullable=False, index=True)
+    engine = Column(Unicode(255), nullable=False)
+    namespace = Column(Unicode(255), nullable=False)
+    name = Column(Unicode(255), nullable=False)
+    result = Column(Unicode(32), nullable=False)
+    duration = Column(Float(asdecimal=True))
+    properties = Column(Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+
+
 class HarbormasterObject(Base):
     __tablename__ = 'harbormaster_object'
 
@@ -269,6 +309,7 @@ class HarbormasterScratchTable(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     bigData = Column(Unicode)
+    nonmutableData = Column(Unicode(64))
 
 
 class LiskCounter(Base):

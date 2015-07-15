@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -46,6 +46,7 @@ class PhabricatorSession(Base):
     sessionExpires = Column(Integer, nullable=False, index=True)
     highSecurityUntil = Column(Integer)
     isPartial = Column(Integer, nullable=False, server_default=text("'0'"))
+    signedLegalpadDocuments = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
 class User(Base):
@@ -74,6 +75,10 @@ class User(Base):
     isApproved = Column(Integer, nullable=False, index=True)
     accountSecret = Column(BINARY(64), nullable=False)
     isEnrolledInMultiFactor = Column(Integer, nullable=False, server_default=text("'0'"))
+    profileImageCache = Column(Unicode(255))
+    availabilityCache = Column(Unicode(255))
+    availabilityCacheTTL = Column(Integer)
+    isMailingList = Column(Integer, nullable=False)
 
     emails = relationship('UserEmail', backref='user')
     externalAccounts = relationship('UserExternalAccount', backref='user')
@@ -81,6 +86,19 @@ class User(Base):
     preferences = relationship('UserPreferences', uselist=False, backref='user')
     profile = relationship('UserProfile', uselist=False, backref='user')
     transactions = relationship('UserTransaction', backref='user')
+
+
+class UserAuthInvite(Base):
+    __tablename__ = 'user_authinvite'
+
+    id = Column(Integer, primary_key=True)
+    authorPHID = Column(String, nullable=False)
+    emailAddress = Column(Unicode(128), nullable=False, unique=True)
+    verificationHash = Column(BINARY(12), nullable=False, unique=True)
+    acceptedByPHID = Column(String)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+    phid = Column(String, nullable=False, unique=True)
 
 
 class UserConfiguredCustomFieldStorage(Base):
@@ -98,8 +116,8 @@ class UserConfiguredCustomFieldStorage(Base):
 class UserCustomFieldNumericIndex(Base):
     __tablename__ = 'user_customfieldnumericindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -165,11 +183,11 @@ class UserExternalAccount(Base):
 class UserLog(Base):
     __tablename__ = 'user_log'
     __table_args__ = (
-        Index('actorPHID', 'actorPHID', 'dateCreated'),
+        Index('action', 'action', 'dateCreated'),
         Index('remoteAddr', 'remoteAddr', 'dateCreated'),
         Index('session', 'session', 'dateCreated'),
-        Index('userPHID', 'userPHID', 'dateCreated'),
-        Index('action', 'action', 'dateCreated')
+        Index('actorPHID', 'actorPHID', 'dateCreated'),
+        Index('userPHID', 'userPHID', 'dateCreated')
     )
 
     id = Column(Integer, primary_key=True)

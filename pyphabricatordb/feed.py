@@ -26,8 +26,8 @@ class FeedStoryData(Base):
 t_feed_storynotification = Table(
     'feed_storynotification', metadata,
     Column('userPHID', String, nullable=False),
-    Column('primaryObjectPHID', String, nullable=False),
-    Column('chronologicalKey', BigInteger, nullable=False),
+    Column('primaryObjectPHID', String, nullable=False, index=True),
+    Column('chronologicalKey', BigInteger, nullable=False, index=True),
     Column('hasViewed', Integer, nullable=False),
     Index('userPHID_2', 'userPHID', 'hasViewed', 'primaryObjectPHID'),
     Index('userPHID', 'userPHID', 'chronologicalKey', unique=True)

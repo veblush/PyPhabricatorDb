@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -60,8 +60,8 @@ class CustomFieldStorage(Base):
 class CustomFieldStringIndex(Base):
     __tablename__ = 'maniphest_customfieldstringindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -83,8 +83,8 @@ class Task(Base):
     __table_args__ = (
         Index('ownerPHID', 'ownerPHID', 'status'),
         Index('priority_2', 'priority', 'subpriority'),
-        Index('authorPHID', 'authorPHID', 'status'),
-        Index('priority', 'priority', 'status')
+        Index('priority', 'priority', 'status'),
+        Index('authorPHID', 'authorPHID', 'status')
     )
 
     id = Column(Integer, primary_key=True)
@@ -106,20 +106,10 @@ class Task(Base):
     subpriority = Column(Float(asdecimal=True), nullable=False)
     viewPolicy = Column(String, nullable=False)
     editPolicy = Column(String, nullable=False)
+    spacePHID = Column(String, index=True)
 
-    subscribers = relationship('TaskSubscriber', backref='task')
     transactions = relationship('Transaction', backref='task')
     customFieldStorages = relationship('CustomFieldStorage', backref='task')
-
-
-class TaskSubscriber(Base):
-    __tablename__ = 'maniphest_tasksubscriber'
-    __table_args__ = (
-        Index('taskPHID', 'taskPHID', 'subscriberPHID', unique=True),
-    )
-
-    taskPHID = Column(String, ForeignKey("maniphest_task.phid"), primary_key=True, nullable=False)
-    subscriberPHID = Column(String, primary_key=True, nullable=False)
 
 
 class Transaction(Base):

@@ -36,8 +36,8 @@ class NuanceItem(Base):
     __tablename__ = 'nuance_item'
     __table_args__ = (
         Index('key_contacter', 'requestorPHID', 'status', 'dateNuanced', 'id'),
-        Index('key_source', 'sourcePHID', 'status', 'dateNuanced', 'id'),
-        Index('key_owner', 'ownerPHID', 'status', 'dateNuanced', 'id')
+        Index('key_owner', 'ownerPHID', 'status', 'dateNuanced', 'id'),
+        Index('key_source', 'sourcePHID', 'status', 'dateNuanced', 'id')
     )
 
     id = Column(Integer, primary_key=True)

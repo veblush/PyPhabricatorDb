@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Index, Integer, String, VARBINARY, text
+from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -31,6 +31,27 @@ class OwnersPackage(Base):
     description = Column(Unicode, nullable=False)
     primaryOwnerPHID = Column(String)
     auditingEnabled = Column(Integer, nullable=False, server_default=text("'0'"))
+    mailKey = Column(BINARY(20), nullable=False)
+
+
+class OwnersPackageTransaction(Base):
+    __tablename__ = 'owners_packagetransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
 
 
 class OwnersPath(Base):

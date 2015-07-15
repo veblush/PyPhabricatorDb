@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -32,7 +32,7 @@ class EdgeData(Base):
     data = Column(Unicode, nullable=False)
 
 
-class PhameBLog(Base):
+class PhameBlog(Base):
     __tablename__ = 'phame_blog'
 
     id = Column(Integer, primary_key=True)
@@ -47,6 +47,26 @@ class PhameBLog(Base):
     viewPolicy = Column(String)
     editPolicy = Column(String)
     joinPolicy = Column(String)
+
+
+class PhameBlogTransaction(Base):
+    __tablename__ = 'phame_blogtransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
 
 
 class PhamePost(Base):
@@ -68,3 +88,23 @@ class PhamePost(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     blogPHID = Column(String)
+
+
+class PhamePosttransaction(Base):
+    __tablename__ = 'phame_posttransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)

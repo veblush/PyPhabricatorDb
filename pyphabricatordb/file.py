@@ -14,8 +14,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -35,6 +35,9 @@ class EdgeData(Base):
 
 class File(Base):
     __tablename__ = 'file'
+    __table_args__ = (
+        Index('key_partial', 'authorPHID', 'isPartial'),
+    )
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
@@ -54,6 +57,20 @@ class File(Base):
     isExplicitUpload = Column(Integer, server_default=text("'1'"))
     mailKey = Column(BINARY(20), nullable=False)
     viewPolicy = Column(String, nullable=False)
+    isPartial = Column(Integer, nullable=False, server_default=text("'0'"))
+
+
+class FileChunk(Base):
+    __tablename__ = 'file_chunk'
+    __table_args__ = (
+        Index('key_file', 'chunkHandle', 'byteStart', 'byteEnd'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    chunkHandle = Column(BINARY(12), nullable=False)
+    byteStart = Column(BigInteger, nullable=False)
+    byteEnd = Column(BigInteger, nullable=False)
+    dataFilePHID = Column(String, index=True)
 
 
 class FileImageMacro(Base):
@@ -104,8 +121,8 @@ class FileTransaction(Base):
 class FileTransactionComment(Base):
     __tablename__ = 'file_transaction_comment'
     __table_args__ = (
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
-        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True)
+        Index('key_draft', 'authorPHID', 'transactionPHID', unique=True),
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

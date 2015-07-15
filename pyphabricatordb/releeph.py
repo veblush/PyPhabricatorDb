@@ -13,9 +13,9 @@ metadata = Base.metadata
 class ReleephBranch(Base):
     __tablename__ = 'releeph_branch'
     __table_args__ = (
-        Index('releephProjectID_name', 'releephProjectID', 'name', unique=True),
+        Index('releephProjectID_2', 'releephProjectID', 'basename', unique=True),
         Index('releephProjectID', 'releephProjectID', 'symbolicName', unique=True),
-        Index('releephProjectID_2', 'releephProjectID', 'basename', unique=True)
+        Index('releephProjectID_name', 'releephProjectID', 'name', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
@@ -82,7 +82,6 @@ class ReleephProject(Base):
     name = Column(Unicode(128), nullable=False, unique=True)
     trunkBranch = Column(Unicode(255), nullable=False)
     repositoryPHID = Column(String, nullable=False)
-    arcanistProjectID = Column(Integer, nullable=False)
     createdByUserPHID = Column(String, nullable=False)
     isActive = Column(Integer, nullable=False, server_default=text("'1'"))
     details = Column(Unicode, nullable=False)

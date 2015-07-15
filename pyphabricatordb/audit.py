@@ -35,8 +35,8 @@ class AuditTransaction(Base):
 class AuditTransactionComment(Base):
     __tablename__ = 'audit_transaction_comment'
     __table_args__ = (
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
-        Index('key_draft', 'authorPHID', 'transactionPHID')
+        Index('key_draft', 'authorPHID', 'transactionPHID'),
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

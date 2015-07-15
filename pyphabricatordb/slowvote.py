@@ -68,6 +68,7 @@ class SlowvotePoll(Base):
     description = Column(Unicode, nullable=False)
     viewPolicy = Column(String, nullable=False)
     isClosed = Column(Integer, nullable=False)
+    spacePHID = Column(String, index=True)
 
 
 class SlowvoteTransaction(Base):

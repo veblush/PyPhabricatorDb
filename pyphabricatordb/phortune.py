@@ -76,6 +76,8 @@ class PhortuneCart(Base):
     cartClass = Column(Unicode(128), nullable=False)
     merchantPHID = Column(String, nullable=False, index=True)
     mailKey = Column(BINARY(20), nullable=False)
+    subscriptionPHID = Column(String, index=True)
+    isInvoice = Column(Integer, nullable=False)
 
 
 class PhortuneCartTransaction(Base):
@@ -243,3 +245,26 @@ class PhortunePurchase(Base):
     usermetadata = Column('metadata', Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+
+
+class PhortuneSubscription(Base):
+    __tablename__ = 'phortune_subscription'
+    __table_args__ = (
+        Index('key_subscription', 'subscriptionClassKey', 'subscriptionRefKey', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    accountPHID = Column(String, nullable=False, index=True)
+    merchantPHID = Column(String, nullable=False, index=True)
+    triggerPHID = Column(String, nullable=False)
+    authorPHID = Column(String, nullable=False)
+    subscriptionClassKey = Column(BINARY(12), nullable=False)
+    subscriptionClass = Column(Unicode(128), nullable=False)
+    subscriptionRefKey = Column(BINARY(12), nullable=False)
+    subscriptionRef = Column(Unicode(128), nullable=False)
+    status = Column(Unicode(32), nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+    defaultPaymentMethodPHID = Column(String)

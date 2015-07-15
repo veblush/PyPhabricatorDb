@@ -14,8 +14,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -50,17 +50,7 @@ class Repository(Base):
     pushPolicy = Column(String, nullable=False)
     credentialPHID = Column(String)
     almanacServicePHID = Column(String)
-
-
-class RepositoryArcanistProject(Base):
-    __tablename__ = 'repository_arcanistproject'
-
-    id = Column(Integer, primary_key=True)
-    phid = Column(String, nullable=False, unique=True)
-    name = Column(Unicode(128), nullable=False, unique=True)
-    repositoryID = Column(Integer)
-    symbolIndexLanguages = Column(Unicode, nullable=False)
-    symbolIndexProjects = Column(Unicode, nullable=False)
+    spacePHID = Column(String, index=True)
 
 
 class RepositoryAuditRequest(Base):
@@ -103,10 +93,10 @@ class RepositoryBranch(Base):
 class RepositoryCommit(Base):
     __tablename__ = 'repository_commit'
     __table_args__ = (
-        Index('repositoryID', 'repositoryID', 'importStatus'),
-        Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
         Index('repositoryID_2', 'repositoryID', 'epoch'),
-        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch')
+        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch'),
+        Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
+        Index('repositoryID', 'repositoryID', 'importStatus')
     )
 
     id = Column(Integer, primary_key=True)
@@ -163,8 +153,8 @@ class RepositoryFileSystem(Base):
 class RepositoryLintMessage(Base):
     __tablename__ = 'repository_lintmessage'
     __table_args__ = (
-        Index('branchID', 'branchID', 'path'),
-        Index('branchID_2', 'branchID', 'code', 'path')
+        Index('branchID_2', 'branchID', 'code', 'path'),
+        Index('branchID', 'branchID', 'path')
     )
 
     id = Column(Integer, primary_key=True)
@@ -243,8 +233,8 @@ class RepositoryPushEvent(Base):
 class RepositoryPushLog(Base):
     __tablename__ = 'repository_pushlog'
     __table_args__ = (
-        Index('key_name', 'repositoryPHID', 'refNameHash'),
-        Index('key_ref', 'repositoryPHID', 'refNew')
+        Index('key_ref', 'repositoryPHID', 'refNew'),
+        Index('key_name', 'repositoryPHID', 'refNameHash')
     )
 
     id = Column(Integer, primary_key=True)
@@ -276,6 +266,7 @@ class RepositoryRefCursor(Base):
     refNameRaw = Column(LONGBLOB, nullable=False)
     refNameEncoding = Column(Unicode(16))
     commitIdentifier = Column(Unicode(40), nullable=False)
+    isClosed = Column(Integer, nullable=False)
 
 
 class RepositoryStatusMessage(Base):
@@ -303,7 +294,7 @@ class RepositorySummary(Base):
 
 t_repository_symbol = Table(
     'repository_symbol', metadata,
-    Column('arcanistProjectID', Integer, nullable=False),
+    Column('repositoryPHID', String, nullable=False),
     Column('symbolContext', Unicode(128), nullable=False),
     Column('symbolName', Unicode(128), nullable=False, index=True),
     Column('symbolType', Unicode(12), nullable=False),

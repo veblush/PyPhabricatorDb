@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Index, Integer, String, VARBINARY
+from sqlalchemy import Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -58,5 +58,8 @@ class OAuthServerOAuthServerClient(Base):
     secret = Column(Unicode(32), nullable=False)
     redirectURI = Column(Unicode(255), nullable=False)
     creatorPHID = Column(String, nullable=False, index=True)
+    isTrusted = Column(Integer, nullable=False, server_default=text("'0'"))
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)

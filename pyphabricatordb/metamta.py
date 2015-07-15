@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -32,10 +32,45 @@ class EdgeData(Base):
     data = Column(Unicode, nullable=False)
 
 
+class MetaMtaApplicationeMail(Base):
+    __tablename__ = 'metamta_applicationemail'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    applicationPHID = Column(String, nullable=False, index=True)
+    address = Column(Unicode(128), nullable=False, unique=True)
+    configData = Column(Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+    spacePHID = Column(String, index=True)
+
+
+class MetaMtaApplicationeMailTransaction(Base):
+    __tablename__ = 'metamta_applicationemailtransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+
+
 class MetaMtaMail(Base):
     __tablename__ = 'metamta_mail'
 
     id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    actorPHID = Column(String, index=True)
     parameters = Column(Unicode, nullable=False)
     status = Column(Unicode(32), nullable=False, index=True)
     message = Column(Unicode)

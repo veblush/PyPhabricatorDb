@@ -25,10 +25,32 @@ class DivinerLiveBook(Base):
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
     name = Column(Unicode(64), nullable=False, unique=True)
+    repositoryPHID = Column(String)
     viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     configurationData = Column(Unicode, nullable=False)
+
+
+class DivinerLiveBookTransaction(Base):
+    __tablename__ = 'diviner_livebooktransaction'
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    authorPHID = Column(String, nullable=False)
+    objectPHID = Column(String, nullable=False, index=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentPHID = Column(String)
+    commentVersion = Column(Integer, nullable=False)
+    transactionType = Column(Unicode(32), nullable=False)
+    oldValue = Column(Unicode, nullable=False)
+    newValue = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
 
 
 class DivinerLiveSymbol(Base):
@@ -40,6 +62,7 @@ class DivinerLiveSymbol(Base):
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
     bookPHID = Column(String, nullable=False)
+    repositoryPHID = Column(String)
     context = Column(Unicode(255))
     type = Column(Unicode(32), nullable=False)
     name = Column(Unicode(255), nullable=False, index=True)
@@ -52,3 +75,25 @@ class DivinerLiveSymbol(Base):
     summary = Column(Unicode)
     isDocumentable = Column(Integer, nullable=False)
     nodeHash = Column(Unicode(64), unique=True)
+
+
+class Edge(Base):
+    __tablename__ = 'edge'
+    __table_args__ = (
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
+    )
+
+    src = Column(String, primary_key=True, nullable=False)
+    type = Column(Integer, primary_key=True, nullable=False)
+    dst = Column(String, primary_key=True, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    seq = Column(Integer, nullable=False)
+    dataID = Column(Integer)
+
+
+class EdgeData(Base):
+    __tablename__ = 'edgedata'
+
+    id = Column(Integer, primary_key=True)
+    data = Column(Unicode, nullable=False)

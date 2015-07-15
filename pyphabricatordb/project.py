@@ -51,6 +51,7 @@ class Project(Base):
     profileImagePHID = Column(String)
     icon = Column(Unicode(32), nullable=False, index=True)
     color = Column(Unicode(32), nullable=False, index=True)
+    mailKey = Column(BINARY(20), nullable=False)
 
     columns = relationship('ProjectColumn', backref='project')
 
@@ -78,8 +79,8 @@ class ProjectColumn(Base):
 class ProjectColumnPosition(Base):
     __tablename__ = 'project_columnposition'
     __table_args__ = (
-        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True),
         Index('boardPHID_2', 'boardPHID', 'columnPHID', 'sequence'),
+        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True),
         Index('objectPHID', 'objectPHID', 'boardPHID')
     )
 
@@ -113,8 +114,8 @@ class ProjectColumnTransaction(Base):
 class ProjectCustomFieldNumericIndex(Base):
     __tablename__ = 'project_customfieldnumericindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -138,8 +139,8 @@ class ProjectCustomFieldStorage(Base):
 class ProjectCustomFieldstringIndex(Base):
     __tablename__ = 'project_customfieldstringindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)

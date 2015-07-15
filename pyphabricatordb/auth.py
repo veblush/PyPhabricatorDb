@@ -44,6 +44,7 @@ class AuthProviderConfig(Base):
     properties = Column(Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    shouldAutoLogin = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
 class AuthProviderConfigTransaction(Base):

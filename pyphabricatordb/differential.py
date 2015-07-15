@@ -111,7 +111,6 @@ class DifferentialDiff(Base):
     lineCount = Column(Integer, nullable=False)
     branch = Column(Unicode(255))
     bookmark = Column(Unicode(255))
-    arcanistProjectPHID = Column(String)
     creationMethod = Column(Unicode(255))
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
@@ -168,6 +167,17 @@ class DifferentialDraft(Base):
     dateModified = Column(dbdatetime, nullable=False)
 
 
+class DifferentialHiddenComment(Base):
+    __tablename__ = 'differential_hiddencomment'
+    __table_args__ = (
+        Index('key_user', 'userPHID', 'commentID', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    userPHID = Column(String, nullable=False)
+    commentID = Column(Integer, nullable=False, index=True)
+
+
 class DifferentialHunk(Base):
     __tablename__ = 'differential_hunk'
 
@@ -202,7 +212,8 @@ class DifferentialHunkModern(Base):
 class DifferentialRevision(Base):
     __tablename__ = 'differential_revision'
     __table_args__ = (
-        Index('authorPHID', 'authorPHID', 'status'),
+        Index('key_status', 'status', 'phid'),
+        Index('authorPHID', 'authorPHID', 'status')
     )
 
     id = Column(Integer, primary_key=True)
@@ -220,7 +231,6 @@ class DifferentialRevision(Base):
     attached = Column(Unicode, nullable=False)
     mailKey = Column(BINARY(40), nullable=False)
     branchName = Column(Unicode(255))
-    arcanistProjectPHID = Column(String)
     viewPolicy = Column(String, nullable=False)
     editPolicy = Column(String, nullable=False)
     repositoryPHID = Column(String, index=True)

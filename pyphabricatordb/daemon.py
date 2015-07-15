@@ -24,6 +24,8 @@ class DaemonLog(Base):
     envHash = Column(BINARY(40), nullable=False)
     status = Column(Unicode(8), nullable=False, index=True)
     runningAsUser = Column(Unicode(255))
+    envInfo = Column(Unicode, nullable=False)
+    daemonID = Column(Unicode(64), nullable=False, unique=True)
 
 
 class DaemonLogEvent(Base):

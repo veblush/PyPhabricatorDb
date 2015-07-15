@@ -55,21 +55,6 @@ class HeraldRuleApplied(Base):
     phid = Column(String, primary_key=True, nullable=False, index=True)
 
 
-class HeraldRuleEdit(Base):
-    __tablename__ = 'herald_ruleedit'
-    __table_args__ = (
-        Index('ruleID', 'ruleID', 'dateCreated'),
-    )
-
-    id = Column(Integer, primary_key=True)
-    ruleID = Column(Integer, nullable=False)
-    editorPHID = Column(String, nullable=False)
-    dateCreated = Column(dbdatetime, nullable=False)
-    dateModified = Column(dbdatetime, nullable=False)
-    ruleName = Column(Unicode(255), nullable=False)
-    action = Column(Unicode(32), nullable=False)
-
-
 class HeraldRuleTransaction(Base):
     __tablename__ = 'herald_ruletransaction'
 

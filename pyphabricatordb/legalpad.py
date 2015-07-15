@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -35,7 +35,8 @@ class EdgeData(Base):
 class LegalpadDocument(Base):
     __tablename__ = 'legalpad_document'
     __table_args__ = (
-        Index('key_creator', 'creatorPHID', 'dateModified'),
+        Index('key_required', 'requireSignature', 'dateModified'),
+        Index('key_creator', 'creatorPHID', 'dateModified')
     )
 
     id = Column(Integer, primary_key=True)
@@ -53,6 +54,7 @@ class LegalpadDocument(Base):
     mailKey = Column(BINARY(20), nullable=False)
     signatureType = Column(Unicode(4), nullable=False)
     preamble = Column(Unicode, nullable=False)
+    requireSignature = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
 class LegalpadDocumentBody(Base):
@@ -75,8 +77,8 @@ class LegalpadDocumentBody(Base):
 class LegalpadDocumentSignature(Base):
     __tablename__ = 'legalpad_documentsignature'
     __table_args__ = (
-        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion'),
-        Index('key_signer', 'signerPHID', 'dateModified')
+        Index('key_signer', 'signerPHID', 'dateModified'),
+        Index('key_document', 'documentPHID', 'signerPHID', 'documentVersion')
     )
 
     id = Column(Integer, primary_key=True)

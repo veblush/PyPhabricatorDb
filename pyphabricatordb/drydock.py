@@ -63,8 +63,8 @@ class DrydockLease(Base):
 class DrydockLog(Base):
     __tablename__ = 'drydock_log'
     __table_args__ = (
-        Index('resourceID', 'resourceID', 'epoch'),
-        Index('leaseID', 'leaseID', 'epoch')
+        Index('leaseID', 'leaseID', 'epoch'),
+        Index('resourceID', 'resourceID', 'epoch')
     )
 
     id = Column(Integer, primary_key=True)

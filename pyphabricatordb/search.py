@@ -37,8 +37,8 @@ t_search_documentrelationship = Table(
     Column('relation', Unicode(4), nullable=False),
     Column('relatedType', Unicode(4), nullable=False),
     Column('relatedTime', Integer, nullable=False),
-    Index('relatedPHID', 'relatedPHID', 'relation'),
-    Index('relation', 'relation', 'relatedPHID')
+    Index('relation', 'relation', 'relatedPHID'),
+    Index('relatedPHID', 'relatedPHID', 'relation')
 )
 
 
