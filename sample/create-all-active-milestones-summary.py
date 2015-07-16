@@ -126,7 +126,7 @@ def dump_all_active_milestones_summary(session, summary_file, list_file):
 def main():
     db_url = sys.argv[1] if len(sys.argv) >= 2 else 'mysql://localhost'
     summary_file = codecs.open(sys.argv[2], "wb", "utf-8") if len(sys.argv) >= 3 else sys.stdout
-    if sys.argv >= 4:
+    if len(sys.argv) >= 4:
         list_file = codecs.open(sys.argv[3], "wb", "utf-8")
         list_file.write(u"\t".join([u"ID", u"Title", u"Project", u"Milestone", u"Owner", u"Status", u"EstimatedTime"]) + u"\n")
     else:
