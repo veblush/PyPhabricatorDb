@@ -14,8 +14,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -51,13 +51,14 @@ class Repository(Base):
     credentialPHID = Column(String)
     almanacServicePHID = Column(String)
     spacePHID = Column(String, index=True)
+    repositorySlug = Column(Unicode(64), unique=True)
 
 
 class RepositoryAuditRequest(Base):
     __tablename__ = 'repository_auditrequest'
     __table_args__ = (
-        Index('key_unique', 'commitPHID', 'auditorPHID', unique=True),
-        Index('auditorPHID', 'auditorPHID', 'auditStatus')
+        Index('auditorPHID', 'auditorPHID', 'auditStatus'),
+        Index('key_unique', 'commitPHID', 'auditorPHID', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
@@ -93,17 +94,18 @@ class RepositoryBranch(Base):
 class RepositoryCommit(Base):
     __tablename__ = 'repository_commit'
     __table_args__ = (
-        Index('repositoryID_2', 'repositoryID', 'epoch'),
-        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch'),
         Index('key_commit_identity', 'commitIdentifier', 'repositoryID', unique=True),
-        Index('repositoryID', 'repositoryID', 'importStatus')
+        Index('authorPHID', 'authorPHID', 'auditStatus', 'epoch'),
+        Index('repositoryID', 'repositoryID', 'importStatus'),
+        Index('repositoryID_2', 'repositoryID', 'epoch'),
+        Index('key_author', 'authorPHID', 'epoch')
     )
 
     id = Column(Integer, primary_key=True)
     repositoryID = Column(Integer, nullable=False)
     phid = Column(String, nullable=False, unique=True)
     commitIdentifier = Column(Unicode(40), nullable=False)
-    epoch = Column(Integer, nullable=False)
+    epoch = Column(Integer, nullable=False, index=True)
     mailKey = Column(BINARY(20), nullable=False)
     authorPHID = Column(String)
     auditStatus = Column(Integer, nullable=False)
@@ -126,7 +128,7 @@ class RepositoryCommitData(Base):
 class RepositoryCoverage(Base):
     __tablename__ = 'repository_coverage'
     __table_args__ = (
-        Index('key_path', 'branchID', 'pathID', 'commitID'),
+        Index('key_path', 'branchID', 'pathID', 'commitID', unique=True),
     )
 
     id = Column(Integer, primary_key=True)
@@ -153,8 +155,8 @@ class RepositoryFileSystem(Base):
 class RepositoryLintMessage(Base):
     __tablename__ = 'repository_lintmessage'
     __table_args__ = (
-        Index('branchID_2', 'branchID', 'code', 'path'),
-        Index('branchID', 'branchID', 'path')
+        Index('branchID', 'branchID', 'path'),
+        Index('branchID_2', 'branchID', 'code', 'path')
     )
 
     id = Column(Integer, primary_key=True)
@@ -260,6 +262,7 @@ class RepositoryRefCursor(Base):
     )
 
     id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
     repositoryPHID = Column(String, nullable=False)
     refType = Column(Unicode(32), nullable=False)
     refNameHash = Column(BINARY(12), nullable=False)
@@ -322,6 +325,14 @@ class RepositoryTransaction(Base):
     contentSource = Column(Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+
+
+class RepositoryUriIndex(Base):
+    __tablename__ = 'repository_uriindex'
+
+    id = Column(Integer, primary_key=True)
+    repositoryPHID = Column(String, nullable=False, index=True)
+    repositoryURI = Column(Unicode, nullable=False, index=True)
 
 
 class RepositoryVCSPassword(Base):

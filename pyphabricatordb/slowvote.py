@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Index, Integer, String, VARBINARY
+from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -69,6 +69,7 @@ class SlowvotePoll(Base):
     viewPolicy = Column(String, nullable=False)
     isClosed = Column(Integer, nullable=False)
     spacePHID = Column(String, index=True)
+    mailKey = Column(BINARY(20), nullable=False)
 
 
 class SlowvoteTransaction(Base):

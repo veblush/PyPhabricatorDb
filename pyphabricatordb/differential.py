@@ -58,8 +58,8 @@ class DifferentialCommit(Base):
 class DifferentialCustomFieldNumericIndex(Base):
     __tablename__ = 'differential_customfieldnumericindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -83,8 +83,8 @@ class DifferentialCustomFieldStorage(Base):
 class DifferentialCustomFieldStringIndex(Base):
     __tablename__ = 'differential_customfieldstringindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -297,8 +297,8 @@ class DifferentialTransactionComment(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('src', 'src', 'type', 'dateCreated', 'seq'),
-        Index('key_dst', 'dst', 'type', 'src', unique=True)
+        Index('key_dst', 'dst', 'type', 'src', unique=True),
+        Index('src', 'src', 'type', 'dateCreated', 'seq')
     )
 
     src = Column(String, primary_key=True, nullable=False)

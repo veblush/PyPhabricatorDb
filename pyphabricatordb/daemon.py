@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import BINARY, Column, Index, Integer, String
+from sqlalchemy import Column, Index, Integer, String
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -21,10 +21,8 @@ class DaemonLog(Base):
     explicitArgv = Column(Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False, index=True)
     dateModified = Column(dbdatetime, nullable=False)
-    envHash = Column(BINARY(40), nullable=False)
     status = Column(Unicode(8), nullable=False, index=True)
     runningAsUser = Column(Unicode(255))
-    envInfo = Column(Unicode, nullable=False)
     daemonID = Column(Unicode(64), nullable=False, unique=True)
 
 

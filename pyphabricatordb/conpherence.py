@@ -23,9 +23,9 @@ class ConpherenceIndex(Base):
 class ConpherenceParticipant(Base):
     __tablename__ = 'conpherence_participant'
     __table_args__ = (
+        Index('conpherencePHID', 'conpherencePHID', 'participantPHID', unique=True),
         Index('unreadCount', 'participantPHID', 'participationStatus'),
-        Index('participationIndex', 'participantPHID', 'dateTouched', 'id'),
-        Index('conpherencePHID', 'conpherencePHID', 'participantPHID', unique=True)
+        Index('participationIndex', 'participantPHID', 'dateTouched', 'id')
     )
 
     id = Column(Integer, primary_key=True)
@@ -102,8 +102,8 @@ class ConpherenceTransactionComment(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)

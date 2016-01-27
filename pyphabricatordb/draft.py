@@ -23,3 +23,18 @@ class Draft(Base):
     usermetadata = Column('metadata', Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+
+
+class DraftVersionedDraft(Base):
+    __tablename__ = 'draft_versioneddraft'
+    __table_args__ = (
+        Index('key_object', 'objectPHID', 'authorPHID', 'version', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    objectPHID = Column(String, nullable=False)
+    authorPHID = Column(String, nullable=False)
+    version = Column(Integer, nullable=False)
+    properties = Column(Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)

@@ -35,8 +35,8 @@ class EdgeData(Base):
 class LegalpadDocument(Base):
     __tablename__ = 'legalpad_document'
     __table_args__ = (
-        Index('key_required', 'requireSignature', 'dateModified'),
-        Index('key_creator', 'creatorPHID', 'dateModified')
+        Index('key_creator', 'creatorPHID', 'dateModified'),
+        Index('key_required', 'requireSignature', 'dateModified')
     )
 
     id = Column(Integer, primary_key=True)
@@ -120,8 +120,8 @@ class LegalpadTransaction(Base):
 class LegalpadTransactionComment(Base):
     __tablename__ = 'legalpad_transaction_comment'
     __table_args__ = (
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
-        Index('key_draft', 'authorPHID', 'documentID', 'transactionPHID', unique=True)
+        Index('key_draft', 'authorPHID', 'documentID', 'transactionPHID', unique=True),
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
     )
 
     id = Column(Integer, primary_key=True)

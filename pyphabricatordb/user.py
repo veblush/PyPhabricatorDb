@@ -183,11 +183,11 @@ class UserExternalAccount(Base):
 class UserLog(Base):
     __tablename__ = 'user_log'
     __table_args__ = (
-        Index('action', 'action', 'dateCreated'),
         Index('remoteAddr', 'remoteAddr', 'dateCreated'),
         Index('session', 'session', 'dateCreated'),
         Index('actorPHID', 'actorPHID', 'dateCreated'),
-        Index('userPHID', 'userPHID', 'dateCreated')
+        Index('userPHID', 'userPHID', 'dateCreated'),
+        Index('action', 'action', 'dateCreated')
     )
 
     id = Column(Integer, primary_key=True)
@@ -228,6 +228,7 @@ class UserProfile(Base):
     profileImagePHID = Column(String)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    icon = Column(Unicode(32), nullable=False)
 
 
 class UserTransaction(Base):

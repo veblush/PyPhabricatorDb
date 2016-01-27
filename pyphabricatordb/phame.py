@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Index, Integer, String, VARBINARY, text
+from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY, text
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -46,7 +46,9 @@ class PhameBlog(Base):
     dateModified = Column(dbdatetime, nullable=False)
     viewPolicy = Column(String)
     editPolicy = Column(String)
-    joinPolicy = Column(String)
+    mailKey = Column(BINARY(20), nullable=False)
+    status = Column(Unicode(32), nullable=False)
+    profileImagePHID = Column(String)
 
 
 class PhameBlogTransaction(Base):
@@ -73,14 +75,13 @@ class PhamePost(Base):
     __tablename__ = 'phame_post'
     __table_args__ = (
         Index('bloggerPosts', 'bloggerPHID', 'visibility', 'datePublished', 'id'),
-        Index('phameTitle', 'bloggerPHID', 'phameTitle', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
     phid = Column(String, nullable=False, unique=True)
     bloggerPHID = Column(String, nullable=False)
     title = Column(Unicode(255), nullable=False)
-    phameTitle = Column(Unicode(64), nullable=False)
+    phameTitle = Column(Unicode(64))
     body = Column(Unicode)
     visibility = Column(Integer, nullable=False, server_default=text("'0'"))
     configData = Column(Unicode)
@@ -88,6 +89,7 @@ class PhamePost(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     blogPHID = Column(String)
+    mailKey = Column(BINARY(20), nullable=False)
 
 
 class PhamePosttransaction(Base):
@@ -106,5 +108,25 @@ class PhamePosttransaction(Base):
     newValue = Column(Unicode, nullable=False)
     contentSource = Column(Unicode, nullable=False)
     usermetadata = Column('metadata', Unicode, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    dateModified = Column(dbdatetime, nullable=False)
+
+
+class PhamePostTransactionComment(Base):
+    __tablename__ = 'phame_posttransaction_comment'
+    __table_args__ = (
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
+    )
+
+    id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
+    transactionPHID = Column(String)
+    authorPHID = Column(String, nullable=False)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    commentVersion = Column(Integer, nullable=False)
+    content = Column(Unicode, nullable=False)
+    contentSource = Column(Unicode, nullable=False)
+    isDeleted = Column(Integer, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)

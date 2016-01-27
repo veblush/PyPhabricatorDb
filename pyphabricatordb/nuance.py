@@ -35,9 +35,10 @@ class EdgeData(Base):
 class NuanceItem(Base):
     __tablename__ = 'nuance_item'
     __table_args__ = (
-        Index('key_contacter', 'requestorPHID', 'status', 'dateNuanced', 'id'),
-        Index('key_owner', 'ownerPHID', 'status', 'dateNuanced', 'id'),
-        Index('key_source', 'sourcePHID', 'status', 'dateNuanced', 'id')
+        Index('key_queue', 'queuePHID', 'status'),
+        Index('key_owner', 'ownerPHID', 'status'),
+        Index('key_requestor', 'requestorPHID', 'status'),
+        Index('key_source', 'sourcePHID', 'status')
     )
 
     id = Column(Integer, primary_key=True)
@@ -51,7 +52,7 @@ class NuanceItem(Base):
     mailKey = Column(BINARY(20), nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
-    dateNuanced = Column(dbdatetime, nullable=False)
+    queuePHID = Column(String, nullable=False)
 
 
 class NuanceItemTransaction(Base):
@@ -103,22 +104,6 @@ class NuanceQueue(Base):
     mailKey = Column(BINARY(20), nullable=False)
     viewPolicy = Column(String, nullable=False)
     editPolicy = Column(String, nullable=False)
-    dateCreated = Column(dbdatetime, nullable=False)
-    dateModified = Column(dbdatetime, nullable=False)
-
-
-class NuanceQueueItem(Base):
-    __tablename__ = 'nuance_queueitem'
-    __table_args__ = (
-        Index('key_one_per_queue', 'itemPHID', 'queuePHID', unique=True),
-        Index('key_queue', 'queuePHID', 'itemStatus', 'itemDateNuanced', 'id')
-    )
-
-    id = Column(Integer, primary_key=True)
-    queuePHID = Column(String, nullable=False)
-    itemPHID = Column(String, nullable=False)
-    itemStatus = Column(Integer, nullable=False)
-    itemDateNuanced = Column(Integer, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
 
@@ -176,9 +161,9 @@ class NuanceRequestor(Base):
 class NuanceRequestorSource(Base):
     __tablename__ = 'nuance_requestorsource'
     __table_args__ = (
-        Index('key_source_key', 'sourcePHID', 'sourceKey', unique=True),
         Index('key_source', 'sourcePHID', 'id'),
-        Index('key_requestor', 'requestorPHID', 'id')
+        Index('key_requestor', 'requestorPHID', 'id'),
+        Index('key_source_key', 'sourcePHID', 'sourceKey', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
@@ -246,6 +231,7 @@ class NuanceSource(Base):
     editPolicy = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    defaultQueuePHID = Column(String, nullable=False)
 
 
 class NuanceSourceTransaction(Base):

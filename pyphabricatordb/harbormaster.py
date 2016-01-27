@@ -14,8 +14,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -48,6 +48,8 @@ class HarbormasterBuild(Base):
     dateModified = Column(dbdatetime, nullable=False)
     buildGeneration = Column(Integer, nullable=False, server_default=text("'0'"))
     planAutoKey = Column(Unicode(32))
+    buildParameters = Column(Unicode, nullable=False)
+    initiatorPHID = Column(String)
 
 
 class HarbormasterBuildable(Base):
@@ -86,11 +88,13 @@ class HarbormasterBuildableTransaction(Base):
 class HarbormasterBuildArtifact(Base):
     __tablename__ = 'harbormaster_buildartifact'
     __table_args__ = (
-        Index('key_garbagecollect', 'artifactType', 'dateCreated'),
-        Index('key_artifact', 'artifactType', 'artifactIndex', unique=True)
+        Index('key_artifact', 'artifactType', 'artifactIndex', unique=True),
+        Index('key_target', 'buildTargetPHID', 'artifactType'),
+        Index('key_garbagecollect', 'artifactType', 'dateCreated')
     )
 
     id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
     artifactType = Column(Unicode(32), nullable=False)
     artifactIndex = Column(BINARY(12), nullable=False)
     artifactKey = Column(Unicode(255), nullable=False)
@@ -119,7 +123,7 @@ class HarbormasterBuildLintMessage(Base):
     path = Column(Unicode, nullable=False)
     line = Column(Integer)
     characterOffset = Column(Integer)
-    code = Column(Unicode(32), nullable=False)
+    code = Column(Unicode(128), nullable=False)
     severity = Column(Unicode(32), nullable=False)
     name = Column(Unicode(255), nullable=False)
     properties = Column(Unicode, nullable=False)
@@ -173,6 +177,8 @@ class HarbormasterBuildPlan(Base):
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     planAutoKey = Column(Unicode(32), unique=True)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
 
 
 class HarbormasterBuildPlanTransaction(Base):
@@ -276,7 +282,7 @@ class HarbormasterBuildTransaction(Base):
     dateModified = Column(dbdatetime, nullable=False)
 
 
-class HarbormasterBuildunitmessage(Base):
+class HarbormasterBuildUnitMessage(Base):
     __tablename__ = 'harbormaster_buildunitmessage'
 
     id = Column(Integer, primary_key=True)

@@ -156,8 +156,8 @@ class PhortuneMerchantTransaction(Base):
 class PhortunePaymentMethod(Base):
     __tablename__ = 'phortune_paymentmethod'
     __table_args__ = (
-        Index('key_merchant', 'merchantPHID', 'accountPHID'),
-        Index('key_account', 'accountPHID', 'status')
+        Index('key_account', 'accountPHID', 'status'),
+        Index('key_merchant', 'merchantPHID', 'accountPHID')
     )
 
     id = Column(Integer, primary_key=True)

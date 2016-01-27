@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import BINARY, Column, Float, Index, Integer, String, VARBINARY
+from sqlalchemy import BINARY, Column, Index, Integer, String, VARBINARY
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -46,7 +46,8 @@ class PonderAnswer(Base):
     content = Column(Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
-    contentSource = Column(Unicode)
+    mailKey = Column(BINARY(20), nullable=False)
+    status = Column(Unicode(32), nullable=False, index=True)
 
 
 class PonderAnswerTransaction(Base):
@@ -95,16 +96,17 @@ class PonderQuestion(Base):
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(255), nullable=False)
     phid = Column(String, nullable=False, unique=True)
-    voteCount = Column(Integer, nullable=False)
     authorPHID = Column(String, nullable=False, index=True)
-    status = Column(Integer, nullable=False, index=True)
+    status = Column(Unicode(32), nullable=False, index=True)
     content = Column(Unicode, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     contentSource = Column(Unicode)
-    heat = Column(Float(asdecimal=True), nullable=False, index=True)
     answerCount = Column(Integer, nullable=False)
     mailKey = Column(BINARY(20), nullable=False)
+    viewPolicy = Column(String, nullable=False)
+    spacePHID = Column(String, index=True)
+    answerWiki = Column(Unicode, nullable=False)
 
 
 class PonderQuestionTransaction(Base):

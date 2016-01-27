@@ -33,8 +33,8 @@ class FactCursor(Base):
 class FactRaw(Base):
     __tablename__ = 'fact_raw'
     __table_args__ = (
-        Index('factType_2', 'factType', 'objectA'),
-        Index('factType', 'factType', 'epoch')
+        Index('factType', 'factType', 'epoch'),
+        Index('factType_2', 'factType', 'objectA')
     )
 
     id = Column(BigInteger, primary_key=True)

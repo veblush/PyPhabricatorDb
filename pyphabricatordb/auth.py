@@ -71,6 +71,7 @@ class AuthSSHkey(Base):
     __tablename__ = 'auth_sshkey'
 
     id = Column(Integer, primary_key=True)
+    phid = Column(String, nullable=False, unique=True)
     objectPHID = Column(String, nullable=False, index=True)
     name = Column(Unicode(255), nullable=False)
     keyType = Column(Unicode(255), nullable=False)

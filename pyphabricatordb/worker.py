@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -39,7 +39,7 @@ class LiskCounter(Base):
     counterValue = Column(BigInteger, nullable=False)
 
 
-class WorkerActivetask(Base):
+class WorkerActiveTask(Base):
     __tablename__ = 'worker_activetask'
     __table_args__ = (
         Index('leaseOwner_2', 'leaseOwner', 'priority', 'id'),
@@ -56,7 +56,7 @@ class WorkerActivetask(Base):
     objectPHID = Column(String, index=True)
 
 
-class WorkerArchivetask(Base):
+class WorkerArchiveTask(Base):
     __tablename__ = 'worker_archivetask'
     __table_args__ = (
         Index('leaseOwner', 'leaseOwner', 'priority', 'id'),

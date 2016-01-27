@@ -13,8 +13,8 @@ metadata = Base.metadata
 class CalendarEvent(Base):
     __tablename__ = 'calendar_event'
     __table_args__ = (
-        Index('userPHID_dateFrom', 'userPHID', 'dateTo'),
-        Index('key_instance', 'instanceOfEventPHID', 'sequenceIndex', unique=True)
+        Index('key_instance', 'instanceOfEventPHID', 'sequenceIndex', unique=True),
+        Index('userPHID_dateFrom', 'userPHID', 'dateTo')
     )
 
     id = Column(Integer, primary_key=True)
@@ -106,8 +106,8 @@ class CalendarHoliday(Base):
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)

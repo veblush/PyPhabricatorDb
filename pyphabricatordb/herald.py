@@ -11,6 +11,28 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
+class Edge(Base):
+    __tablename__ = 'edge'
+    __table_args__ = (
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
+    )
+
+    src = Column(String, primary_key=True, nullable=False)
+    type = Column(Integer, primary_key=True, nullable=False)
+    dst = Column(String, primary_key=True, nullable=False)
+    dateCreated = Column(dbdatetime, nullable=False)
+    seq = Column(Integer, nullable=False)
+    dataID = Column(Integer)
+
+
+class EdgeData(Base):
+    __tablename__ = 'edgedata'
+
+    id = Column(Integer, primary_key=True)
+    data = Column(Unicode, nullable=False)
+
+
 class HeraldAction(Base):
     __tablename__ = 'herald_action'
 

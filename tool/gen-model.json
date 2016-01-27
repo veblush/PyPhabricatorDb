@@ -67,7 +67,11 @@
     "EdgeData": {}
   },
   "phabricator_countdown": {
-    "CountDown": {}
+    "CountDown": {},
+    "CountdownTransaction": {},
+    "CountdownTransactionComment": {},
+    "Edge": {},
+    "EdgeData": {}    
   },
   "phabricator_daemon": {
     "DaemonLog": {},
@@ -115,14 +119,18 @@
     "EdgeData": {}
   },
   "phabricator_draft": {
-    "Draft": {}
+    "Draft": {},
+    "DraftVersionedDraft": {}
   },
   "phabricator_drydock": {
+    "DrydockAuthorization": {},
     "DrydockBlueprint": {},
     "DrydockBlueprintTransaction": {},
+    "DrydockCommand": {},
     "DrydockLease": {},
     "DrydockLog": {},
-    "DrydockReSource": {}
+    "DrydockResource": {},
+    "DrydockSlotLock": {}
   },
   "phabricator_fact": {
     "FactAggregate": {},
@@ -164,7 +172,7 @@
     "HarbormasterBuildableTransaction": {},
     "HarbormasterBuildArtifact": {},
     "HarbormasterBuildCommand": {},
-     "HarbormasterBuildLintMessage": {},
+    "HarbormasterBuildLintMessage": {},
     "HarbormasterBuildLog": {},
     "HarbormasterBuildLogchunk": {},
     "HarbormasterBuildMessage": {},
@@ -174,12 +182,14 @@
     "HarbormasterBuildStepTransaction": {},
     "HarbormasterBuildTarget": {},
     "HarbormasterBuildTransaction": {},
-    "HarbormasterBuildunitmessage": {},
+    "HarbormasterBuildUnitMessage": {},
     "HarbormasterObject": {},
     "HarbormasterScratchTable": {},
     "LiskCounter": {}
   },
   "phabricator_herald": {
+    "Edge": {},
+    "EdgeData": {},
     "HeraldAction": {},
     "HeraldCondition": {},
     "HeraldRule": {},
@@ -254,7 +264,6 @@
     "NuanceItemTransaction": {},
     "NuanceItemTransactionComment": {},
     "NuanceQueue": {},
-    "NuanceQueueItem": {},
     "NuanceQueueTransaction": {},
     "NuanceQueueTransactionComment": {},
     "NuanceRequestor": {},
@@ -272,6 +281,12 @@
     "OAuthServerOAuthServerClient": {}
   },
   "phabricator_owners": {
+    "Edge": {},
+    "EdgeData": {},
+    "OwnersCustomFieldNumericIndex": {},
+    "OwnersCustomFieldStorage": {},
+    "OwnersCustomFieldStringIndex": {},
+    "OwnersNameNgrams": {},
     "OwnersOwner": {},
     "OwnersPackage": {},
     "OwnersPackageTransaction": {},
@@ -296,7 +311,8 @@
     "EdgeData": {},
     "PhameBlog": {},
     "PhameBlogTransaction": {},
-    "PhamePost": {}
+    "PhamePost": {},
+    "PhamePostTransactionComment": {}
   },
   "phabricator_phlux": {
     "PhluxTransaction": {},
@@ -433,11 +449,19 @@
     "RepositoryStatusMessage": {},
     "RepositorySummary": {},
     "RepositoryTransaction": {},
+    "RepositoryUriIndex": {},
     "RepositoryVCSPassword": {}
   },
   "phabricator_search": {
     "SearchDocument": {},
+    "SearchDocumentField": {},
+    "SearchDocumentRelationship": {},
+    "SearchEditEngineConfiguration": {},
+    "SearchEditEngineConfigurationTransaction": {},
+    "SearchIndexVersion": {},
     "SearchNamedQuery": {},
+    "SearchProfilePanelConfiguration": {},
+    "SearchProfilePanelConfigurationTransaction": {},
     "SearchSavedQuery": {}
   },
   "phabricator_slowvote": {
@@ -510,14 +534,14 @@
     "Edge": {},
     "EdgeData": {},
     "LiskCounter": {},
-    "WorkerActivetask": {},
-    "WorkerArchivetask": {},
+    "WorkerActiveTask": {},
+    "WorkerArchiveTask": {},
     "WorkerBulkJob": {},
     "WorkerBulkJobTransaction": {},
     "WorkerBulkTask": {},
     "WorkerTaskData": {}
   },
-  "phabricator_xhpastview": {
+  "phabricator_xhpast": {
     "XhpastviewParseTree": {}
   },
   "phabricator_xhprof": {

@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -76,18 +76,6 @@ class MetaMtaMail(Base):
     message = Column(Unicode)
     relatedPHID = Column(String, index=True)
     dateCreated = Column(dbdatetime, nullable=False, index=True)
-    dateModified = Column(dbdatetime, nullable=False)
-
-
-class MetaMtaMailingList(Base):
-    __tablename__ = 'metamta_mailinglist'
-
-    id = Column(Integer, primary_key=True)
-    phid = Column(String, nullable=False, unique=True)
-    name = Column(Unicode(128), nullable=False, unique=True)
-    email = Column(Unicode(128), nullable=False, unique=True)
-    uri = Column(Unicode(255))
-    dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
 
 

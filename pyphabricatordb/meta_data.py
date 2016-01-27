@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import BigInteger, Column, Integer, String
 from sqlalchemy import String, Unicode, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from dbdatetime import dbdatetime
@@ -15,3 +15,4 @@ class PatchStatus(Base):
 
     patch = Column(Unicode(128), primary_key=True)
     applied = Column(Integer, nullable=False)
+    duration = Column(BigInteger)

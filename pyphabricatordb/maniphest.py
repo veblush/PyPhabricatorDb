@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -35,8 +35,8 @@ class EdgeData(Base):
 class CustomFieldNumericIndex(Base):
     __tablename__ = 'maniphest_customfieldnumericindex'
     __table_args__ = (
-        Index('key_find', 'indexKey', 'indexValue'),
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
+        Index('key_find', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)
@@ -81,9 +81,9 @@ class NameIndex(Base):
 class Task(Base):
     __tablename__ = 'maniphest_task'
     __table_args__ = (
-        Index('ownerPHID', 'ownerPHID', 'status'),
         Index('priority_2', 'priority', 'subpriority'),
         Index('priority', 'priority', 'status'),
+        Index('ownerPHID', 'ownerPHID', 'status'),
         Index('authorPHID', 'authorPHID', 'status')
     )
 

@@ -34,24 +34,35 @@ class EdgeData(Base):
 
 class Project(Base):
     __tablename__ = 'project'
+    __table_args__ = (
+        Index('key_path', 'projectPath', 'projectDepth'),
+        Index('key_milestone', 'parentProjectPHID', 'milestoneNumber', unique=True)
+    )
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode(128), nullable=False, unique=True)
+    name = Column(Unicode(128), nullable=False)
     phid = Column(String, nullable=False, unique=True)
     authorPHID = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
     status = Column(Unicode(32), nullable=False)
-    subprojectPHIDs = Column(Unicode, nullable=False)
-    phrictionSlug = Column(Unicode(128), unique=True)
-    viewPolicy = Column(String)
-    editPolicy = Column(String)
-    joinPolicy = Column(String)
+    viewPolicy = Column(String, nullable=False)
+    editPolicy = Column(String, nullable=False)
+    joinPolicy = Column(String, nullable=False)
     isMembershipLocked = Column(Integer, nullable=False, server_default=text("'0'"))
     profileImagePHID = Column(String)
     icon = Column(Unicode(32), nullable=False, index=True)
     color = Column(Unicode(32), nullable=False, index=True)
     mailKey = Column(BINARY(20), nullable=False)
+    primarySlug = Column(Unicode(128), unique=True)
+    parentProjectPHID = Column(String)
+    hasWorkboard = Column(Integer, nullable=False)
+    hasMilestones = Column(Integer, nullable=False)
+    hasSubprojects = Column(Integer, nullable=False)
+    milestoneNumber = Column(Integer)
+    projectPath = Column(String, nullable=False)
+    projectDepth = Column(Integer, nullable=False)
+    projectPathKey = Column(BINARY(4), nullable=False, unique=True)
 
     columns = relationship('ProjectColumn', backref='project')
 
@@ -59,8 +70,8 @@ class Project(Base):
 class ProjectColumn(Base):
     __tablename__ = 'project_column'
     __table_args__ = (
-        Index('key_sequence', 'projectPHID', 'sequence'),
-        Index('key_status', 'projectPHID', 'status', 'sequence')
+        Index('key_status', 'projectPHID', 'status', 'sequence'),
+        Index('key_sequence', 'projectPHID', 'sequence')
     )
 
     id = Column(Integer, primary_key=True)
@@ -79,9 +90,9 @@ class ProjectColumn(Base):
 class ProjectColumnPosition(Base):
     __tablename__ = 'project_columnposition'
     __table_args__ = (
+        Index('objectPHID', 'objectPHID', 'boardPHID'),
         Index('boardPHID_2', 'boardPHID', 'columnPHID', 'sequence'),
-        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True),
-        Index('objectPHID', 'objectPHID', 'boardPHID')
+        Index('boardPHID', 'boardPHID', 'columnPHID', 'objectPHID', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
@@ -139,8 +150,8 @@ class ProjectCustomFieldStorage(Base):
 class ProjectCustomFieldstringIndex(Base):
     __tablename__ = 'project_customfieldstringindex'
     __table_args__ = (
-        Index('key_join', 'objectPHID', 'indexKey', 'indexValue'),
-        Index('key_find', 'indexKey', 'indexValue')
+        Index('key_find', 'indexKey', 'indexValue'),
+        Index('key_join', 'objectPHID', 'indexKey', 'indexValue')
     )
 
     id = Column(Integer, primary_key=True)

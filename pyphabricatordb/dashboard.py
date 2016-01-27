@@ -21,6 +21,7 @@ class Dashboard(Base):
     editPolicy = Column(String, nullable=False)
     dateCreated = Column(dbdatetime, nullable=False)
     dateModified = Column(dbdatetime, nullable=False)
+    status = Column(Unicode(32), nullable=False)
 
 
 class DashboardInstall(Base):

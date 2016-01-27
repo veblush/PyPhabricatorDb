@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -48,6 +48,7 @@ class PastebinPaste(Base):
     editPolicy = Column(String, nullable=False)
     mailKey = Column(BINARY(20), nullable=False)
     spacePHID = Column(String, index=True)
+    status = Column(Unicode(32), nullable=False)
 
 
 class PastebinPasteTransaction(Base):

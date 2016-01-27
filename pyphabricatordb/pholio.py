@@ -13,8 +13,8 @@ metadata = Base.metadata
 class Edge(Base):
     __tablename__ = 'edge'
     __table_args__ = (
-        Index('key_dst', 'dst', 'type', 'src', unique=True),
-        Index('src', 'src', 'type', 'dateCreated', 'seq')
+        Index('src', 'src', 'type', 'dateCreated', 'seq'),
+        Index('key_dst', 'dst', 'type', 'src', unique=True)
     )
 
     src = Column(String, primary_key=True, nullable=False)
@@ -93,8 +93,8 @@ class PholioTransaction(Base):
 class PholioTransactionComment(Base):
     __tablename__ = 'pholio_transaction_comment'
     __table_args__ = (
-        Index('key_draft', 'authorPHID', 'imageID', 'transactionPHID', unique=True),
-        Index('key_version', 'transactionPHID', 'commentVersion', unique=True)
+        Index('key_version', 'transactionPHID', 'commentVersion', unique=True),
+        Index('key_draft', 'authorPHID', 'imageID', 'transactionPHID', unique=True)
     )
 
     id = Column(Integer, primary_key=True)
